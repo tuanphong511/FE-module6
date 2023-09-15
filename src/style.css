@@ -1,0 +1,70 @@
+.css-1wnsr1i {
+    border: none !important;
+    border-radius: 10px;
+    width: 40% !important;
+    text-align: center;
+}
+
+.icon-fb {
+    width: 301px;
+    height: 37px;
+    border-radius: 5px !important;
+    color: rgb(32, 32, 33) !important;
+    margin: 17px 0 10px 0 !important;
+}
+
+.color-svg-fb {
+    color: rgb(68, 138, 236);
+}
+
+.icon-gg {
+    width: 301px;
+    height: 37px;
+    border-radius: 5px !important;
+    color: rgb(32, 32, 33) !important;
+}
+
+.btn-login-fb-gg {
+    padding: 10px !important;
+}
+
+.navbar-bg {
+    background-color: white !important;
+}
+
+.inp-search {
+    border-radius: 40px !important;
+    border: 1px solid black !important;
+    background-color: white;
+}
+
+.list-frame {
+    width: 80vw;
+    height: 80vh;
+    border-radius: 10px;
+    box-shadow: 1px 2px 9px rgb(193, 193, 193);
+    margin: auto;
+}
+
+.btn-text {
+    background-color: transparent; /* Loại bỏ màu nền */
+    border: none; /* Loại bỏ viền */
+    padding: 0; /* Loại bỏ padding */
+    color: inherit; /* Sử dụng màu văn bản mặc định của phần tử cha */
+    font-size: inherit; /* Sử dụng kích thước font chung của phần tử cha */
+    cursor: pointer; /* Biểu tượng con trỏ khi di chuột qua nút */
+}
+
+.btn-text:hover,
+.btn-text:active,
+.btn-text:focus {
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
