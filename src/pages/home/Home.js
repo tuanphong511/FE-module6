@@ -9,8 +9,7 @@ export default function Home() {
         <div>
             <Navbar />
             <FunctionBar/>
-            <SlideShow/>
-            <ListHouse/>
+            <ListHouse />
         </div>
     )
 }

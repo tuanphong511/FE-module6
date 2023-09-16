@@ -1,23 +1,50 @@
 import "./FunctionBar.css"
+import "../../style.css"
 export default function FunctionBar(){
     return(
-        <div className={"big-item"}>
-            <button className="button1">
-                <span></span><span></span><span></span><span></span>
-                Effect one
-            </button>
-            <button className="button1">
-                <span></span><span></span><span></span><span></span>
-                Effect two
-            </button>
-            <button className="button1">
-                <span></span><span></span><span></span><span></span>
-                Effect three
-            </button>
-            <button className="button1">
-                <span></span><span></span><span></span><span></span>
-                Effect Four
-            </button>
+        <div className="btn-search-category">
+            <span>
+                <img src="icon-piano.jpeg" alt="err" />
+                <div>
+                    Grand piano
+                </div>
+            </span>
+            <span>
+                <img src="icon-pool.jpeg" alt="err" />
+                <div>
+                    Hồ bơi
+                </div>
+            </span>
+            <span>
+                <img src="icon-pool.jpeg" alt="err" />
+                <div>
+                    Hồ bơi
+                </div>
+            </span>
+            <span>
+                <img src="icon-pool.jpeg" alt="err" />
+                <div>
+                    Hồ bơi
+                </div>
+            </span>
+            <span>
+                <img src="icon-pool.jpeg" alt="err" />
+                <div>
+                    Hồ bơi
+                </div>
+            </span>
+            <span>
+                <img src="icon-pool.jpeg" alt="err" />
+                <div>
+                    Hồ bơi
+                </div>
+            </span>
+            <span>
+                <img src="icon-pool.jpeg" alt="err" />
+                <div>
+                    Hồ bơi
+                </div>
+            </span>
         </div>
     )
 }

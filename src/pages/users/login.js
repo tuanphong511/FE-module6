@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../../services/userService";
 import * as Yup from "yup"
 import { useFormik } from "formik";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SchemaError = Yup.object().shape({
     username: Yup.string().required("Tài khoản không được để trống"),
@@ -23,13 +23,11 @@ const SchemaError = Yup.object().shape({
 const defaultTheme = createTheme();
 
 export default function Login({ setLogin, handleClose }) {
+    const [error, setError] = React.useState("");
 
     const changeLogin = () => {
         setLogin(false);
     }
-
-    const [error, setError] = React.useState("");
-
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -42,16 +40,12 @@ export default function Login({ setLogin, handleClose }) {
 
         const isValid = await SchemaError.isValid(data)
 
-    
         if (!isValid) {
             setError("Vui lòng kiểm tra lại thông tin đăng nhập");
             return;
         }
-    
         try {
             const response = await dispatch(login(data))
-
-
             if (response.payload.data.message.token === "User is not exist") {
 
                 toast.error("Tài khoản không tồn tại ");
@@ -61,24 +55,19 @@ export default function Login({ setLogin, handleClose }) {
                 toast.success("Đăng nhập thành công");
                 handleClose();
             }
-            console.log(response.payload.data.message.token)
 
             const user = response.payload.data.message.token;
-            if (user.role === 'Người dùng'){
+            if (user.role === 'Người dùng') {
                 navigate('/user')
-            }else if (user.role === 'Người cho thuê') {
+            } else if (user.role === 'Người cho thuê') {
                 navigate("/host")
-            }else if (user.role === 'Admin')
+            } else if (user.role === 'Admin')
                 navigate("/admin")
-
-
         } catch (error) {
-            // Xử lý lỗi từ API hoặc một lỗi khác nếu cần
             console.error("Lỗi đăng nhập: ", error);
         }
     }
 
-    
     const formik = useFormik({
         initialValues: {
             username: "",
@@ -86,12 +75,10 @@ export default function Login({ setLogin, handleClose }) {
         },
         validationSchema: SchemaError,
         onSubmit: (values) => {
-            // Không cần gọi dispatch(login(data)) ở đây
-            // Chỉ cần gọi handleLogin(values)
             handleLogin(values);
         },
     });
-    
+
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -135,7 +122,7 @@ export default function Login({ setLogin, handleClose }) {
                             {...formik.getFieldProps("username")}
                         />
                         {formik.touched.username && formik.errors.username ? (
-                            <div className="error" style={{color: "red"}}>{formik.errors.username}</div>
+                            <div className="error" style={{ color: "red" }}>{formik.errors.username}</div>
                         ) : null}
                         <TextField
                             className="width-textfield"
@@ -150,7 +137,7 @@ export default function Login({ setLogin, handleClose }) {
                             {...formik.getFieldProps("password")}
                         />
                         {formik.touched.password && formik.errors.password ? (
-                            <div className="error" style={{color: "red"}}>{formik.errors.password}</div>
+                            <div className="error" style={{ color: "red" }}>{formik.errors.password}</div>
                         ) : null}
                         <Button
                             type="submit"
@@ -176,7 +163,7 @@ export default function Login({ setLogin, handleClose }) {
                             </IconButton>
                             Đăng nhập với Google
                         </Button>
-                        <Link variant="body2" onClick={changeLogin}>
+                        <Link variant="body2" onClick={changeLogin} className="link">
                             {"Bạn chưa có tài khoản? Đăng ký"}
                         </Link>
                     </Box>
