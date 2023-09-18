@@ -46,6 +46,7 @@ export default function Navbar() {
         }
     }, []);
     return (
+        <div className={"col-12"}>
         <Box>
             <AppBar position="static" className='navbar-bg'>
                 <Toolbar>
@@ -133,5 +134,6 @@ export default function Navbar() {
             <MyAccount openMyAccount={openMyAccount} setOpenMyAccount={setOpenMyAccount} />
             <BasicModal open={open} setOpen={setOpen} />
         </Box>
+        </div>
     );
 }

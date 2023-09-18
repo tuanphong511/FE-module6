@@ -142,4 +142,36 @@ span div {
 .information-house {
     text-align: left;
 }
+#carouselExampleCaptions1 {
+    max-width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.carousel-inner {
+    max-height: 80vh;
+}
+
+.carousel-control-prev {
+    position: absolute;
+    top: 50%;
+    left: 90px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-control-next {
+    position: absolute;
+    top: 50%;
+    right: 90px;
+    transform: translateY(-50%);
+}
+
+#carouselExampleIndicators2 {
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+}
 

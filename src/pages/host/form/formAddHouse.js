@@ -7,12 +7,12 @@ import { toast } from "react-toastify";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { storage } from "../../../firebase";
+import {addPictures} from "../../../services/pictureService";
 
 export default function FormAddHouse() {
-    let a = JSON.parse(localStorage.getItem("user"));
-    const [imageUpload, setImageUpload] = useState(null);
+    const a = JSON.parse(localStorage.getItem("user"));
+    const [imageUpload, setImageUpload] = useState([]);
     const [percent, setPercent] = useState(0);
-    const [urlFile, setUrlFile] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [values, setValues] = useState({
         name: "",
@@ -21,64 +21,150 @@ export default function FormAddHouse() {
         numberOfBathrooms: "",
         description: "",
         price: "",
-        status:""
+        status: "",
     });
 
-    const uploadFile = () => {
-        if (imageUpload == null) return;
-        const storageRef = ref(storage, `/file/${imageUpload.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, imageUpload);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const percent = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                setPercent(percent);
-            },
-            (err) => console.error(err),
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    setUrlFile(url);
-                    setIsLoading(false);
-                });
-            }
-        );
+    const [imgStatus, setImgStatus] = useState([]);
+
+    const uploadFiles = () => {
+        if (imageUpload.length === 0) return;
+
+        const uploadPromises = [];
+        const uploadedFileUrls = [];
+
+        for (const file of imageUpload) {
+            const storageRef = ref(storage, `/files/${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadPromises.push(
+                new Promise((resolve, reject) => {
+                    uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {
+                            const percent = Math.round(
+                                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                            );
+                            setPercent(percent);
+                        },
+                        (err) => {
+                            console.error(err);
+                            reject(err);
+                        },
+                        () => {
+                            getDownloadURL(uploadTask.snapshot.ref)
+                                .then((url) => {
+                                    uploadedFileUrls.push(url);
+                                    resolve(url);
+                                })
+                                .catch((error) => {
+                                    console.error(error);
+                                    reject(error);
+                                });
+                        }
+                    );
+                })
+            );
+        }
+
+        // Chạy tất cả các promise để đợi tải lên hoàn tất
+        Promise.all(uploadPromises)
+            .then(() => {
+                // Lưu danh sách URL của các tệp đã tải lên vào mảng imgStatus
+                setImgStatus(uploadedFileUrls);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error uploading files:", error);
+            });
     };
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleAdd = () => {
-        if (!values.name || !values.address || !values.numberOfBedrooms || !values.numberOfBathrooms || !values.description || !values.price || !values.status || !urlFile) {
-            toast.error("Vui lòng điền đầy đủ thông tin và tải lên một hình ảnh.");
+        if (
+            !values.name ||
+            !values.address ||
+            !values.numberOfBedrooms ||
+            !values.numberOfBathrooms ||
+            !values.description ||
+            !values.price ||
+            !values.status ||
+            imgStatus.length === 0
+        ) {
+            toast.error("Vui lòng điền đầy đủ thông tin và tải lên ít nhất một hình ảnh.");
             return;
         }
 
-        let data = {
+        // Thêm nhà mới
+        let houseData = {
             name: values.name,
             address: values.address,
             numberOfBedrooms: values.numberOfBedrooms,
             numberOfBathrooms: values.numberOfBathrooms,
             description: values.description,
             price: values.price,
-            status:values.status,
-            avatar: urlFile,
+            status: values.status,
+            picture: imgStatus,
             user: { id: a.message.token.idUser },
-
         };
 
-        dispatch(addHouses(data)).then((res) => {
-            dispatch(getHouses());
-            navigate("/");
-            toast.success("Đã thêm thành công");
-        });
+        let newHouseId; // Biến lưu id của nhà mới được tạo
+
+        dispatch(addHouses(houseData))
+            .then((houseRes) => {
+                console.log(houseRes.payload.id)
+                // Lấy id của nhà mới được tạo
+                newHouseId = 1
+
+
+                // Tạo mảng promise để thêm các đường dẫn hình ảnh vào bảng Picture
+                const addPicturePromises = imgStatus.map((imageUrl) => {
+                    // Thêm id của nhà vào dữ liệu ảnh
+                    const pictureData = {
+                        picture: imageUrl,
+                        house: { id: houseRes.payload.id }, // Sử dụng id của nhà mới
+                    };
+                    console.log(pictureData)
+
+                    // Thêm ảnh vào bảng Picture
+                    return dispatch(addPictures(pictureData))
+                        .then((res) => {
+                            console.log(res)
+                            // Trong đây, bạn có thể làm gì đó nếu cần
+                        })
+                        .catch((error) => {
+                            console.error("Error adding picture:", error);
+                        });
+                });
+
+                // Chạy tất cả các promise để đợi thêm các đường dẫn hình ảnh hoàn tất
+                return Promise.all(addPicturePromises);
+            }).catch((e)=>{
+            console.log(e)
+        })
+
+            .then((res) => {
+                console.log(res)
+
+                // Tất cả ảnh đã được thêm vào nhà mới thành công
+                dispatch(getHouses());
+                toast.success("Đã thêm thành công");
+
+                navigate("/");
+            })
+            .catch((error) => {
+
+                console.error("Error adding house:", error);
+            });
     };
+
+
 
     useEffect(() => {
         if (imageUpload) {
             setIsLoading(true);
-            uploadFile();
+            uploadFiles();
         }
     }, [imageUpload]);
 
@@ -160,7 +246,7 @@ export default function FormAddHouse() {
                 <Grid item xs={12}>
                     <TextField
                         sx={{ width: "500px" }}
-                        label="trạng thái"
+                        label="Trạng thái"
                         name="status"
                         value={values.status}
                         onChange={handleInputChange}
@@ -172,10 +258,11 @@ export default function FormAddHouse() {
                         style={{ width: "500px" }}
                         id="avatar"
                         type="file"
-                        name="avatar"
+                        name="picture"
                         onChange={(event) => {
-                            setImageUpload(event.target.files[0]);
+                            setImageUpload(Array.from(event.target.files));
                         }}
+                        multiple
                         required
                     />
                     {isLoading && (
@@ -192,7 +279,11 @@ export default function FormAddHouse() {
                             </div>
                         </div>
                     )}
-                    {urlFile && !isLoading && <img src={urlFile} alt="" />}
+                    {imgStatus.length > 0 &&
+                        !isLoading &&
+                        imgStatus.map((url, index) => (
+                            <img key={index} src={url} alt={`Image ${index}`} />
+                        ))}
                 </Grid>
             </Grid>
             <Button
