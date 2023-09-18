@@ -114,32 +114,35 @@ span div {
     margin: 0 20px 0 20px;
 }
 
-.list-house {
-    margin: 20px;
-    border-radius: 10px;
-    width: 280px;
-    height: 370px;
-    padding: 0 20px 0 20px;
+#carouselExampleCaptions1 {
+    max-width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.carousel-inner {
+    max-height: 80vh;
+}
+
+.carousel-control-prev {
+    position: absolute;
+    top: 65%;
+    left: 60px;
+    transform: translateY(-50%);
     display: flex;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Tạo 4 cột có độ rộng bằng nhau */
-    gap: 20px;
+    align-items: center;
+    justify-content: center;
 }
 
-.list-item {
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
+.carousel-control-next {
+    position: absolute;
+    top: 65%;
+    right: 60px;
+    transform: translateY(-50%);
 }
 
-.image-house img {
-    width: 100%;
-    height: auto;
+#carouselExampleIndicators2 {
+    width: 300px;
+    height: 300px;
     border-radius: 10px;
 }
-
-
-.information-house {
-    text-align: left;
-}
-
