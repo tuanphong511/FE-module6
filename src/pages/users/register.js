@@ -17,19 +17,50 @@ import { Menu } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import {useEffect, useState} from "react";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
+import {storage} from "../../firebase";
 
 const defaultTheme = createTheme();
 
 export default function Register({ setLogin }) {
-    const [fullname, setFullname] = React.useState("")
+
     const [username, setUsername] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [telephone, setTelephone] = React.useState("")
+    const [fullName, setFullName] = React.useState("")
     const [address, setAddress] = React.useState("")
     const [role, setRole] = React.useState("Người dùng")
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [confirmPassword, setConfirmPassword] = React.useState("");
     const [isError, setIsError] = React.useState("");
+    const [imageUpload, setImageUpload] = useState(null);
+    const [percent, setPercent] = useState(0);
+    const [urlFile, setUrlFile] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+
+    const uploadFile = () => {
+        if (imageUpload == null) return;
+        const storageRef = ref(storage, `/file/${imageUpload.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, imageUpload);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                setPercent(percent);
+            },
+            (err) => console.error(err),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    setUrlFile(url);
+                    setIsLoading(false);
+                });
+            }
+        );
+    };
 
 
     const changeLogin = () => {
@@ -58,8 +89,7 @@ export default function Register({ setLogin }) {
     const dispatch = useDispatch();
 
     const handleRegister = async () => {
-        let userData = { username, password, confirmPassword, telephone, role }
-        console.log(userData);
+        let userData = { username, password, confirmPassword, telephone, role, fullName, address, avatar:urlFile }
         await dispatch(register(userData));
         toast.success("Đăng ký thành công", { autoClose: 1500 })
         setTimeout(() => {
@@ -67,6 +97,12 @@ export default function Register({ setLogin }) {
         }, 2000);
 
     }
+    useEffect(() => {
+        if (imageUpload) {
+            setIsLoading(true);
+            uploadFile();
+        }
+    }, [imageUpload]);
     return (
         <ThemeProvider theme={defaultTheme}>
             <Box
@@ -98,9 +134,9 @@ export default function Register({ setLogin }) {
                             autoComplete="fullname"
                             autoFocus
                             sx={{ width: "300px" }}
-                            value={fullname}
+                            value={fullName}
                             onChange={(e) => {
-                                setFullname(e.target.value)
+                                setFullName(e.target.value)
                             }}
                         />
                         <TextField
@@ -178,15 +214,32 @@ export default function Register({ setLogin }) {
                                 setAddress(e.target.value)
                             }}
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            name="avatar"
-                            type="file"
+                        <input
+                            style={{ width: "500px" }}
                             id="avatar"
-                            autoComplete="off"
-                            sx={{ width: "300px" }}
+                            type="file"
+                            name="avatar"
+
+                            onChange={(event) => {
+                                setImageUpload(event.target.files[0]);
+                            }}
+                            required
                         />
+                        {isLoading && (
+                            <div className="progress">
+                                <div
+                                    className="progress-bar"
+                                    role="progressbar"
+                                    style={{ width: `${percent}%` }}
+                                    aria-valuenow={percent}
+                                    aria-valuemin={0}
+                                    aria-valuemax={100}
+                                >
+                                    {percent}%
+                                </div>
+                            </div>
+                        )}
+                        {urlFile && !isLoading && <img src={urlFile} alt="" />}
                         <Button
                             variant="contained"
                             style={{ backgroundColor: 'white', color: 'black', margin: "10px 0 0 0", width: "300px" }}
