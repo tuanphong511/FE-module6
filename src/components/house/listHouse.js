@@ -2,13 +2,17 @@ import "../../style.css";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getHouses} from "../../services/houseService";
+import Button from "@mui/material/Button";
+import {Link, useNavigate} from "react-router-dom";
 export default function ListHouse() {
     const houses = useSelector((state) =>{
         return state.houses.houses
     })
-    const pictures = useSelector((state) =>{
-        return state.pictures.pictures
-    })
+    const navigate = useNavigate();
+
+    const handleDetail = () => {
+        navigate('/detail/house');
+    }
 
     const dispatch = useDispatch()
     useEffect(() =>{
@@ -19,8 +23,8 @@ export default function ListHouse() {
     return (
         <>
             {houses.map((item, key) => (
-                <div className="col-3 mt-4" style={{ maxWidth: "17%" }} key={key}>
-                    <div className="card" style={{ width: "18rem" }}>
+                <div className="col-3 " style={{ marginLeft: "70px", margin: "", cursor: "pointer" }} key={key}>
+                    <div className="card" style={{ width: "25rem", borderRadius: "10px" }}>
                         <div id={`home${key}`} className="carousel slide" data-ride="carousel">
                             <ol className="carousel-indicators">
                                 {item.picture.map((picture, index) => (
@@ -32,13 +36,15 @@ export default function ListHouse() {
                                     ></li>
                                 ))}
                             </ol>
-                            <div className="carousel-inner">
+                            <div className="carousel-inner" onClick={(e) =>{
+                                handleDetail(e)
+                            }}>
                                 {item.picture.map((picture, index) => (
                                     <div
                                         key={index}
                                         className={`carousel-item ${index === 0 ? "active" : ""}`}
                                     >
-                                        <img className="d-block w-100" src={picture.picture} alt={`Slide ${index + 1}`} />
+                                        <img className="d-block w-100" src={picture.picture} style={{borderRadius: "10px", height: "400px"}} alt={`Slide ${index + 1}`} />
                                     </div>
                                 ))}
                             </div>
@@ -61,9 +67,16 @@ export default function ListHouse() {
                                 <span className="sr-only">Next</span>
                             </a>
                         </div>
-                        <div className="card-body">
+                        <div className="card-body" style={{ textAlign: "left" }} onClick={(e) => {
+                            handleDetail(e)
+                        }}>
                             <h5 className="card-title">{item.name}</h5>
+                            <h5 className="card-title">{item.address}</h5>
+                            <h5 className="card-title">{item.price}/đêm</h5>
                             <p className="card-text">{item.description}</p>
+                        </div>
+                        <div>
+                            <Button variant="text">Sửa</Button>
                         </div>
                     </div>
                 </div>

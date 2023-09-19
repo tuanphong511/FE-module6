@@ -13,6 +13,8 @@ import MyAccount from '../../pages/myAcount/MyAccount';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Profile from "../../pages/proFile/Profile";
+import {useState} from "react";
+import {useSelector} from "react-redux";
 
 export default function Navbar() {
     const [open, setOpen] = React.useState(false);
@@ -26,10 +28,12 @@ export default function Navbar() {
     const isLoggedIn = !!token && !!username;
     const openMenu = Boolean(anchorEl);
 
+
     const handleOpenProfile = () => setOpenProfile(true)
     const handleOpen = () => setOpen(true);
     const handleOpenMyAccount = () => setOpenMyAccount(true)
     const navigate = useNavigate()
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -46,6 +50,7 @@ export default function Navbar() {
         }
     }, []);
     return (
+
         <div className={"col-12"}>
         <Box>
             <AppBar position="static" className='navbar-bg'>
@@ -109,9 +114,13 @@ export default function Navbar() {
 
                                         <hr style={{width: "100%", margin: "5px"}} />
 
-                                        <MenuItem onClick={handleAddHouse}>Cho thuê nhà</MenuItem>
 
-                                        <hr style={{width: "100%", margin: "5px"}} />
+
+                                            <MenuItem onClick={handleAddHouse}>Cho thuê nhà</MenuItem>
+
+
+                                             <hr style={{width: "100%", margin: "5px"}}/>
+
 
                                         <MenuItem onClick={() => {
                                             localStorage.clear()

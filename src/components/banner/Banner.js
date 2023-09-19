@@ -9,7 +9,7 @@ export default function Banner() {
                     <li data-target="#carouselExampleCaptions1" data-slide-to="1"></li>
                     <li data-target="#carouselExampleCaptions1" data-slide-to="2"></li>
                 </ol>
-                <div className="carousel-inner">
+                <div className="carousel-inner" style={{borderRadius: "10px"}}>
                     <div className="carousel-item active">
                         <img src="https://www.homelane.com/blog/wp-content/uploads/2022/11/single-floor-house-design.jpg" className="d-block w-100" alt="..." />
                         <div className="carousel-caption d-none d-md-block">
@@ -26,9 +26,10 @@ export default function Banner() {
                     </div>
                     <div className="carousel-item">
                         <img src="https://www.homelane.com/blog/wp-content/uploads/2022/11/single-floor-house-design.jpg" className="d-block w-100" alt="..." />
-                        <div className="carousel-caption d-none d-md-block" />
-                        {/*<h5>Third slide label</h5>*/}
-                        {/*<p>Some representative placeholder content for the third slide.</p>*/}
+                        <div className="carousel-caption d-none d-md-block">
+                            <h5>Third slide label</h5>
+                            <p>Some representative placeholder content for the third slide.</p>
+                        </div>
                     </div>
                 </div>
             </div>

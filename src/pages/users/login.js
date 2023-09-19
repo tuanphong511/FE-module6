@@ -38,6 +38,7 @@ export default function Login({ setLogin, handleClose }) {
             password: event.target.password.value
         }
 
+
         const isValid = await SchemaError.isValid(data)
 
         if (!isValid) {
@@ -46,6 +47,7 @@ export default function Login({ setLogin, handleClose }) {
         }
         try {
             const response = await dispatch(login(data))
+            console.log(data)
             if (response.payload.data.message.token === "User is not exist") {
 
                 toast.error("Tài khoản không tồn tại ");
@@ -55,14 +57,17 @@ export default function Login({ setLogin, handleClose }) {
                 toast.success("Đăng nhập thành công");
                 handleClose();
             }
+            console.log(response.payload.data.message.token)
 
             const user = response.payload.data.message.token;
+
             if (user.role === 'Người dùng') {
                 navigate('/user')
             } else if (user.role === 'Người cho thuê') {
                 navigate("/host")
-            } else if (user.role === 'Admin')
+            } else if (user.role === 'admin')
                 navigate("/admin")
+            console.log(user.role)
         } catch (error) {
             console.error("Lỗi đăng nhập: ", error);
         }
