@@ -3,7 +3,7 @@ import StarIcon from '@mui/icons-material/Star';
 import Footer from "../../../components/footer/Footer";
 import { Box, Modal } from "@mui/material";
 import React, { useState } from 'react';
-import { DatePicker, Space } from 'antd';
+import BasicDateRangePicker from "../../../components/selectDatetime";
 
 const style = {
     position: 'absolute',
@@ -24,16 +24,10 @@ export default function DetailHouse() {
     const onChange = (date, dateString) => {
         console.log(date, dateString);
     };
-
-    const App = () => (
-        <Space direction="vertical">
-            <DatePicker onChange={onChange} />
-        </Space>
-    );
     return (
         <div className="row">
             <div className="col-12">
-                <Navbar />
+                <Navbar/>
             </div>
             <div className="col-12" style={{ padding: "0 100px" }}>
                 <div style={{ display: "flex" }}>
@@ -139,24 +133,10 @@ export default function DetailHouse() {
                                 </div>
                             </div>
                         </div>
-                        <div onClick={handleOpen} style={{ border: "0.5px solid", display: "flex", borderRadius: "10px", textAlign: "center", marginTop: "20px", cursor: "pointer" }}>
-                            <div style={{ borderRight: "0.5px solid", width: "150px", padding: "20px" }}>
-                                Nhận phòng
-                            </div>
-                            <div style={{ padding: "20px", textAlign: "center" }}>
-                                Trả phòng
-                            </div>
-                            <Modal
-                            open={open}
-                            onClose={handleClose}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                        >
-                            <Box sx={style}>
-                                <App />
-                            </Box>
-                        </Modal>
+                        <div style={{ display: "flex", borderRadius: "10px", textAlign: "center", marginTop: "20px" }}>
+                            <BasicDateRangePicker />
                         </div>
+
                     </div>
                 </div>
             </div>
