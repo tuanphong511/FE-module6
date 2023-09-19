@@ -7,7 +7,7 @@ export default function Admin(){
     return(
         <div>
 
-            <ListUser></ListUser>
+            <ListUser />
         </div>
     )
 }

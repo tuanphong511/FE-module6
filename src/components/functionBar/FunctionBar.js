@@ -16,33 +16,39 @@ export default function FunctionBar(){
                 </div>
             </span>
             <span>
-                <img src="icon-pool.jpeg" alt="err" />
+                <img src="icon-north-pole.jpeg" alt="err" />
                 <div>
-                    Hồ bơi
+                    Bắc cực
                 </div>
             </span>
             <span>
-                <img src="icon-pool.jpeg" alt="err" />
+                <img src="icon-mountain.jpeg" alt="err" />
                 <div>
-                    Hồ bơi
+                    Nhà trên núi
                 </div>
             </span>
             <span>
-                <img src="icon-pool.jpeg" alt="err" />
+                <img src="icon-countryside.jpeg" alt="err" />
                 <div>
-                    Hồ bơi
+                    Nông thôn
                 </div>
             </span>
             <span>
-                <img src="icon-pool.jpeg" alt="err" />
+                <img src="icon-lake.jpeg" alt="err" />
                 <div>
-                    Hồ bơi
+                    Ven hồ
                 </div>
             </span>
             <span>
-                <img src="icon-pool.jpeg" alt="err" />
+                <img src="icon-beauty-scene.jpeg" alt="err" />
                 <div>
-                    Hồ bơi
+                    Cảnh đẹp
+                </div>
+            </span>
+            <span>
+                <img src="icon-villa.jpeg" alt="err" />
+                <div>
+                    Biệt thự
                 </div>
             </span>
         </div>
