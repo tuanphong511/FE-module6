@@ -11,15 +11,17 @@ export default function Footer() {
                         <div class="container text-center text-md-start mt-5">
                             <div class="row mt-3">
                                 <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                                    <h6 class="text-uppercase fw-bold">Company name</h6>
+                                    <h6 class="text-uppercase fw-bold">Tên công ty</h6>
                                     <hr
                                         class="mb-4 mt-0 d-inline-block mx-auto"
                                         style={{ width: "60px", backgroundColor: "#7c4dff", height: "2px" }}
                                     />
                                     <p>
-                                        Here you can use rows and columns to organize your footer
-                                        content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                                        elit.
+                                        CÔNG TY ĐỨC VIỆT
+                                        <br/>
+                                        Công ty hiện đã hoạt động và làm việc 10 năm ,
+                                        đạt nhiều lượt đánh giá tốt. Công ty được rất
+                                        nhiều người tin tưởng
                                     </p>
                                 </div>
                                 <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">

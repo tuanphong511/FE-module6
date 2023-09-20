@@ -115,7 +115,7 @@ span div {
 }
 
 #carouselExampleCaptions1 {
-    max-width: 80%;
+    max-width: 90%;
     margin: 0 auto;
     position: relative;
 }
@@ -127,7 +127,7 @@ span div {
 .carousel-control-prev {
     position: absolute;
     top: 50%;
-    left: 70px;
+    left: 30px;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
@@ -137,7 +137,7 @@ span div {
 .carousel-control-next {
     position: absolute;
     top: 50%;
-    right: 70px;
+    right: 30px;
     transform: translateY(-50%);
 }
 

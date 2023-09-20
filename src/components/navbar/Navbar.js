@@ -22,11 +22,13 @@ export default function Navbar() {
     const [openProfile, setOpenProfile] = React.useState()
     const [openMyAccount, setOpenMyAccount] = React.useState(false)
     const [anchorEl, setAnchorEl] = React.useState(null);
+
     const user = JSON.parse(localStorage.getItem('user')) || null;
     const token = user && user.message && user.message.token;
     const username = token ? token.username : null;
     const isLoggedIn = !!token && !!username;
     const openMenu = Boolean(anchorEl);
+    const role = user && user.message && user.message.role;
 
 
     const handleOpenProfile = () => setOpenProfile(true)
@@ -115,7 +117,7 @@ export default function Navbar() {
                                         <hr style={{width: "100%", margin: "5px"}} />
 
 
-
+                                            
                                             <MenuItem onClick={handleAddHouse}>Cho thuê nhà</MenuItem>
 
 
