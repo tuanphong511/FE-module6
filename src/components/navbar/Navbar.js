@@ -13,6 +13,8 @@ import MyAccount from '../../pages/myAcount/MyAccount';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Profile from "../../pages/proFile/Profile";
+import {useState} from "react";
+import {useSelector} from "react-redux";
 
 export default function Navbar() {
     const [open, setOpen] = React.useState(false);
@@ -20,16 +22,20 @@ export default function Navbar() {
     const [openProfile, setOpenProfile] = React.useState()
     const [openMyAccount, setOpenMyAccount] = React.useState(false)
     const [anchorEl, setAnchorEl] = React.useState(null);
+
     const user = JSON.parse(localStorage.getItem('user')) || null;
     const token = user && user.message && user.message.token;
     const username = token ? token.username : null;
     const isLoggedIn = !!token && !!username;
     const openMenu = Boolean(anchorEl);
+    const role = user && user.message && user.message.role;
+
 
     const handleOpenProfile = () => setOpenProfile(true)
     const handleOpen = () => setOpen(true);
     const handleOpenMyAccount = () => setOpenMyAccount(true)
     const navigate = useNavigate()
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -46,6 +52,8 @@ export default function Navbar() {
         }
     }, []);
     return (
+
+        <div className={"col-12"}>
         <Box>
             <AppBar position="static" className='navbar-bg'>
                 <Toolbar>
@@ -108,9 +116,13 @@ export default function Navbar() {
 
                                         <hr style={{width: "100%", margin: "5px"}} />
 
-                                        <MenuItem onClick={handleAddHouse}>Cho thuê nhà</MenuItem>
 
-                                        <hr style={{width: "100%", margin: "5px"}} />
+                                            
+                                            <MenuItem onClick={handleAddHouse}>Cho thuê nhà</MenuItem>
+
+
+                                             <hr style={{width: "100%", margin: "5px"}}/>
+
 
                                         <MenuItem onClick={() => {
                                             localStorage.clear()
@@ -133,5 +145,6 @@ export default function Navbar() {
             <MyAccount openMyAccount={openMyAccount} setOpenMyAccount={setOpenMyAccount} />
             <BasicModal open={open} setOpen={setOpen} />
         </Box>
+        </div>
     );
 }

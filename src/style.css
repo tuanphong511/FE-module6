@@ -111,35 +111,131 @@ span img {
 
 span div {
     font-size: 15px;
-    margin: 0 20px 0 20px;
+    margin: 0 25px 0 25px;
 }
 
-.list-house {
-    margin: 20px;
-    border-radius: 10px;
-    width: 280px;
-    height: 370px;
-    padding: 0 20px 0 20px;
+#carouselExampleCaptions1 {
+    max-width: 90%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.carousel-inner {
+    max-height: 80vh;
+}
+
+.carousel-control-prev {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
     display: flex;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Tạo 4 cột có độ rộng bằng nhau */
-    gap: 20px;
+    align-items: center;
+    justify-content: center;
 }
 
-.list-item {
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
+.carousel-control-next {
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
 }
 
-.image-house img {
-    width: 100%;
-    height: auto;
+#carouselExampleIndicators2 {
+    width: 300px;
+    height: 300px;
     border-radius: 10px;
 }
 
-
-.information-house {
-    text-align: left;
+.section1 {
+    padding: 20px 0 ;
 }
 
+
+.control-prev {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    color: black;
+}
+
+.control-next {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+.card {
+    border: none;
+}
+
+.control-prev, .control-next {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.carousel:hover .control-prev, .carousel:hover .control-next {
+    opacity: 1;
+}
+
+/* Đổi màu mũi tên chuyển tiếp sang màu đen */
+.control-prev,
+.control-next {
+    background-color: rgba(0, 0, 0, 0.5); /* Màu nền của nút chuyển tiếp (màu đen) */
+    border: none;
+    border-radius: 50%; /* Làm cho nút trở thành hình tròn */
+    width: 40px; /* Chiều rộng của nút */
+    height: 40px; /* Chiều cao của nút */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.control-prev-icon,
+.control-next-icon {
+    background-color: #fff; /* Màu nền của mũi tên (màu trắng) */
+    border-radius: 50%; /* Làm cho mũi tên trở thành hình tròn */
+    width: 25px; /* Chiều rộng của mũi tên */
+    height: 25px; /* Chiều cao của mũi tên */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.control-prev:hover,
+.control-next:hover {
+    background-color: #000; /* Màu nền của nút chuyển tiếp khi hover (màu đen) */
+}
+
+.control-prev-icon:hover,
+.control-next-icon:hover {
+    background-color: #fff; /* Màu nền của mũi tên khi hover (màu trắng) */
+}
+
+
+.custom-indicators .carousel-indicator {
+    background-color: transparent; /* Loại bỏ màu nền mặc định */
+    border: 2px solid #007bff; /* Viền cho chỉ số */
+    width: 15px; /* Kích thước chiều rộng */
+    height: 15px; /* Kích thước chiều cao */
+    border-radius: 50%; /* Làm cho nó trở thành hình tròn */
+    margin-right: 5px; /* Khoảng cách giữa các chỉ số */
+    cursor: pointer; /* Thay đổi con trỏ khi rê chuột qua chỉ số */
+}
+
+/* Đặt chỉ số đầu tiên là active */
+.custom-indicators .carousel-indicator.active {
+    background-color: #007bff; /* Màu nền của chỉ số active */
+    border: 2px solid transparent; /* Loại bỏ viền khi chỉ số active */
+}

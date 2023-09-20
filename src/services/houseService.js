@@ -1,0 +1,32 @@
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const getHouses = createAsyncThunk(
+    'houses/getHouses',
+    async () =>{
+        const res  = await axios.get('http://localhost:5000/houses')
+        return res
+    }
+)
+export const addHouses = createAsyncThunk(
+    'houses/addHouses',
+    async (data) =>{
+        const res  = await axios.post('http://localhost:5000/houses',data)
+        return res.data
+    }
+)
+export const deleteHouses = createAsyncThunk(
+    'houses/deleteHouses',
+    async (id) =>{
+        const res  = await axios.delete(`http://localhost:5000/houses/${id}`)
+        return res
+    }
+)
+export const updateHouses = createAsyncThunk(
+    'houses/updateHouses',
+    async (id) =>{
+        const res  = await axios.put(`http://localhost:5000/houses/${id}`)
+        return res
+    }
+)
+

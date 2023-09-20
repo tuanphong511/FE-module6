@@ -45,7 +45,7 @@ export default function ListUser() {
                         <th scope="col">Hành động</th>
                         <th scope="col">
                             <Link to={"/detail/user"}>
-                                <button class="btn btn-light btn-text" type="button" aria-expanded="false" >
+                                <button className="btn btn-light btn-text" type="button" aria-expanded="false" >
                                     Chi tiết
                                 </button>
                             </Link>
