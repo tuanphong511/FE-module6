@@ -107,23 +107,24 @@ export default function Register({ setLogin }) {
     return (
         <ThemeProvider theme={defaultTheme}>
             <Box
-                className="form-register" 
+                className="form-register"
+
             >
-                <div className="form-register-user">
+                <div className="form-register-user" >
                     <Avatar sx={{ m: 1, width: "50px", height: "50px", margin: "auto" }}>
                         <img src="logo.png" style={{ width: "50px", height: "50px", borderRadius: "50%" }} alt="err" />
                     </Avatar>
-                    <Typography component="h1" variant="h5" sx={{ margin: "auto", width:"89px" }}>
+                    <Typography component="h1" variant="h5" sx={{ margin: "auto", width: "89px" }}>
                         Đăng ký
                     </Typography>
                     <Box component="form"
                         sx={{
-                            mt: 1,
                             my: 0,
                             mx: 0,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            marginTop: "15px"
                         }}
                     >
                         <Grid container spacing={2}>
@@ -136,7 +137,10 @@ export default function Register({ setLogin }) {
                                     name="fullname"
                                     autoComplete="fullname"
                                     autoFocus
-                                    sx={{ width: "300px" }}
+                                    sx={{
+                                        width: "300px",
+                                        margin: 0
+                                    }}
                                     value={fullName}
                                     onChange={(e) => {
                                         setFullName(e.target.value)
@@ -152,7 +156,7 @@ export default function Register({ setLogin }) {
                                     name="username"
                                     autoComplete="username"
                                     autoFocus
-                                    sx={{ width: "300px" }}
+                                    sx={{ width: "300px", margin: 0 }}
                                     value={username}
                                     onChange={(e) => {
                                         setUsername(e.target.value)
@@ -168,7 +172,7 @@ export default function Register({ setLogin }) {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
-                                    sx={{ width: "300px" }}
+                                    sx={{ width: "300px", margin: 0 }}
                                     value={password}
                                     onChange={(e) => {
                                         setPassword(e.target.value)
@@ -185,7 +189,7 @@ export default function Register({ setLogin }) {
                                     label="Xác nhận mật khẩu"
                                     id="confirmPassword"
                                     autoComplete="off"
-                                    sx={{ width: "300px" }}
+                                    sx={{ width: "300px", margin: 0 }}
                                     value={confirmPassword}
                                     onChange={(e) =>
                                         checkValidation(e.target.value)
@@ -204,7 +208,7 @@ export default function Register({ setLogin }) {
                                     type="tel"
                                     id="telephone"
                                     autoComplete="off"
-                                    sx={{ width: "300px" }}
+                                    sx={{ width: "300px", margin: 0 }}
                                     value={telephone}
                                     onChange={(e) => {
                                         setTelephone(e.target.value)
@@ -220,7 +224,7 @@ export default function Register({ setLogin }) {
                                     type="address"
                                     id="address"
                                     autoComplete="off"
-                                    sx={{ width: "300px" }}
+                                    sx={{ width: "300px", margin: 0 }}
                                     value={address}
                                     onChange={(e) => {
                                         setAddress(e.target.value)
@@ -229,11 +233,10 @@ export default function Register({ setLogin }) {
                             </Grid>
                             <Grid item xs={6}>
                                 <input
-                                    style={{ width: "500px" }}
+                                    style={{ width: "300px", margin: 0, height: "55px", border: "0.5px solid gray", borderRadius: "5px", cursor: "pointer", padding: "13px" }}
                                     id="avatar"
                                     type="file"
                                     name="avatar"
-
                                     onChange={(event) => {
                                         setImageUpload(event.target.files[0]);
                                     }}
@@ -258,7 +261,7 @@ export default function Register({ setLogin }) {
                             <Grid item xs={6}>
                                 <Button
                                     variant="contained"
-                                    style={{ backgroundColor: 'white', color: 'black', margin: "10px 0 0 0", width: "300px" }}
+                                    style={{ backgroundColor: 'white', color: 'black', width: "300px", height: "55px", margin: 0, border: "0.5px solid gray"}}
                                     onClick={handleStatusClick}
                                     endIcon={<ArrowDropDownIcon />}
                                 >
@@ -273,24 +276,23 @@ export default function Register({ setLogin }) {
                                     <MenuItem onClick={() => handleStatusClose('Người cho thuê')}>Người cho thuê</MenuItem>
                                 </Menu>
                             </Grid>
-                            <Grid item xs={12} sx={{textAlign:"center"}}>
+                            <Grid item xs={12} sx={{ textAlign: "center" }}>
                                 <FormControlLabel
                                     control={<Checkbox value="remember" color="primary" />}
                                     label="Remember me"
                                 />
                             </Grid>
-                            <Grid item xs={12} sx={{textAlign:"center"}}>
+                            <Grid item xs={12} sx={{ textAlign: "center", padding: "1px" }}>
                                 <Button
                                     type="button"
                                     variant="contained"
-                                    sx={{ mt: 3, mb: 2, width: "300px" }}
+                                    sx={{ mb: 2, width: "100%" }}
                                     onClick={handleRegister}
-
                                 >
                                     Đăng ký
                                 </Button>
                             </Grid>
-                            <Link variant="body2" onClick={changeLogin} className="link">
+                            <Link variant="body2" onClick={changeLogin} className="link" style={{margin: "0 auto"}}>
                                 {"Bạn đã có tài khoản? Đăng nhập"}
                             </Link>
                         </Grid>
