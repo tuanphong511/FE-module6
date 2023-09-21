@@ -179,7 +179,7 @@ export default function FormAddHouse() {
     return (
         <div className="form-add-house">
             <Navbar />
-            <h2>Thêm nhà mới</h2>
+            <h2>Đăng nhà cho thuê</h2>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField

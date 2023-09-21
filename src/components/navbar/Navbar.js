@@ -11,10 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import "../../style.css";
 import MyAccount from '../../pages/myAcount/MyAccount';
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import Profile from "../../pages/proFile/Profile";
-import {useState} from "react";
-import {useSelector} from "react-redux";
 
 export default function Navbar() {
     const [open, setOpen] = React.useState(false);
@@ -46,7 +43,6 @@ export default function Navbar() {
         navigate("/houses")
     }
     React.useEffect(() => {
-        console.log(user)
         if (user && !loggedIn) {
             setLoggedIn(true);
         }
@@ -55,7 +51,7 @@ export default function Navbar() {
 
         <div className={"col-12"}>
         <Box>
-            <AppBar position="static" className='navbar-bg'>
+            <AppBar position="static" className='navbar-bg' sx={{height: "80px"}}>
                 <Toolbar>
                     <Grid container spacing={2}>
                         <Grid item xs={1}>
@@ -75,7 +71,8 @@ export default function Navbar() {
                                 sx={{
                                     '& .MuiOutlinedInput-notchedOutline': {
                                         border: 'none'
-                                    }
+                                    },
+                                    top: "5px"
                                 }}
                                 className='inp-search'
                                 id="outlined-basic"
@@ -126,15 +123,12 @@ export default function Navbar() {
 
                                         <MenuItem onClick={() => {
                                             localStorage.clear()
-                                            toast.success('Đăng xuất thành công')
                                         }}>Đăng xuất</MenuItem>
                                     </Menu>
                                 </div>
                             ) : (
-                                <Button color="inherit" onClick={handleOpen}>
-                                    <AccountCircleIcon
-                                        sx={{ color: "black", fontSize: 40, margin: "20px 0 0 0" }}
-                                    />
+                                <Button sx={{ color: "black", top: 25, width: "110px"}} onClick={handleOpen}>
+                                    Đăng nhập
                                 </Button>
                             )}
                         </Grid>
