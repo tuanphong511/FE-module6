@@ -5,13 +5,14 @@ export const getHouses = createAsyncThunk(
     'houses/getHouses',
     async () =>{
         const res  = await axios.get('http://localhost:5000/houses')
-        return res
+        return res.data
     }
 )
 export const addHouses = createAsyncThunk(
     'houses/addHouses',
     async (data) =>{
-        const res  = await axios.post('http://localhost:5000/houses',data)
+        await axios.post('http://localhost:5000/houses',data)
+        const res  = await axios.get('http://localhost:5000/houses')
         return res.data
     }
 )

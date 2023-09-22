@@ -215,7 +215,7 @@ export default function Register({ setLogin }) {
                             }}
                         />
                         <input
-                            style={{ width: "500px" }}
+                            style={{ width: "300px" }}
                             id="avatar"
                             type="file"
                             name="avatar"
@@ -239,7 +239,7 @@ export default function Register({ setLogin }) {
                                 </div>
                             </div>
                         )}
-                        {urlFile && !isLoading && <img src={urlFile} alt="" />}
+                        {urlFile && !isLoading && <img style={{width: "100px", height: "100px"}} src={urlFile} alt="" />}
                         <Button
                             variant="contained"
                             style={{ backgroundColor: 'white', color: 'black', margin: "10px 0 0 0", width: "300px" }}

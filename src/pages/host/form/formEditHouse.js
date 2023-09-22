@@ -10,7 +10,6 @@ import { storage } from "../../../firebase";
 import customAxios from "../../../services/api";
 
 export default function FormEditHouse() {
-    console.log(1)
     let a = JSON.parse(localStorage.getItem("user"));
     const [imageUpload, setImageUpload] = useState(null);
     const [percent, setPercent] = useState(0);
@@ -23,7 +22,8 @@ export default function FormEditHouse() {
         numberOfBathrooms: "",
         description: "",
         price: "",
-        status: ""
+        status: "",
+        rentals: ""
     });
 
     const uploadFile = () => {
@@ -56,9 +56,10 @@ export default function FormEditHouse() {
 
     useEffect(() => {
         try {
-            customAxios.get(`/houses/?id=${id}`).then(res => {
-                setValues(res.data[0])
-                console.log("res", res)
+            customAxios.get(`/houses/${id}`).then(res => {
+                setValues(res.data)
+                console.log("res", res.data)
+                return res.data
             })
         }
         catch (err) {
@@ -75,8 +76,10 @@ export default function FormEditHouse() {
             description: values.description,
             price: values.price,
             status: values.status,
-            avatar: urlFile,
-            user: { id: a.message.token.idUser }
+            rentals:values.rentals,
+
+            user: { id: a.message.token.idUser },
+
         };
         console.log("data: ", data);
 

@@ -13,8 +13,7 @@ const houseSlice =createSlice({
             state.houses = action.payload.data
         })
         builder.addCase(addHouses.fulfilled, (state, action) =>{
-            console.log("houseSlice",action.payload)
-            state.houses.push(action.payload)
+            state.houses = action.payload.data
         })
 
     }

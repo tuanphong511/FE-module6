@@ -1,13 +1,14 @@
-import { Button, Grid, TextField } from "@mui/material";
+import {Button, Grid, TextField} from "@mui/material";
 import Navbar from "../../../components/navbar/Navbar";
-import { useDispatch } from "react-redux";
-import { addHouses, getHouses } from "../../../services/houseService";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { useEffect, useState } from "react";
-import { storage } from "../../../firebase";
+import {useDispatch} from "react-redux";
+import {addHouses, getHouses} from "../../../services/houseService";
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+import {ref, getDownloadURL, uploadBytesResumable} from "firebase/storage";
+import {useEffect, useState} from "react";
+import {storage} from "../../../firebase";
 import {addPictures} from "../../../services/pictureService";
+import axios from "axios";
 
 export default function FormAddHouse() {
     const a = JSON.parse(localStorage.getItem("user"));
@@ -22,9 +23,14 @@ export default function FormAddHouse() {
         description: "",
         price: "",
         status: "",
+        rentals:"",
+        user : {
+            id : 1
+        }
     });
 
     const [imgStatus, setImgStatus] = useState([]);
+    console.log(imgStatus,"img")
 
     const uploadFiles = () => {
         if (imageUpload.length === 0) return;
@@ -80,6 +86,7 @@ export default function FormAddHouse() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    let newHouseId; // Biến lưu id của nhà mới được tạo
 
     const handleAdd = () => {
         if (
@@ -89,7 +96,8 @@ export default function FormAddHouse() {
             !values.numberOfBathrooms ||
             !values.description ||
             !values.price ||
-            !values.status ||
+            // !values.status ||
+            // !values.rentals ||
             imgStatus.length === 0
         ) {
             toast.error("Vui lòng điền đầy đủ thông tin và tải lên ít nhất một hình ảnh.");
@@ -105,32 +113,31 @@ export default function FormAddHouse() {
             description: values.description,
             price: values.price,
             status: values.status,
+            rentals:values.rentals,
             picture: imgStatus,
-            user: { id: a.message.token.idUser },
+            userId : a.message.token.idUser
+            // order:{id: values.payload.id}
         };
+        console.log(houseData,"user house")
 
-        let newHouseId; // Biến lưu id của nhà mới được tạo
 
         dispatch(addHouses(houseData))
             .then((houseRes) => {
-                console.log(houseRes.payload.id)
                 // Lấy id của nhà mới được tạo
                 newHouseId = 1
-
-
                 // Tạo mảng promise để thêm các đường dẫn hình ảnh vào bảng Picture
                 const addPicturePromises = imgStatus.map((imageUrl) => {
+
                     // Thêm id của nhà vào dữ liệu ảnh
                     const pictureData = {
                         picture: imageUrl,
-                        house: { id: houseRes.payload.id }, // Sử dụng id của nhà mới
+                        house: {id: houseRes.payload[houseRes.payload.length - 1].id},
+                       // Sử dụng id của nhà mới
                     };
-                    console.log(pictureData)
-
+                    console.log(pictureData,"pic")
                     // Thêm ảnh vào bảng Picture
                     return dispatch(addPictures(pictureData))
                         .then((res) => {
-                            console.log(res)
                             // Trong đây, bạn có thể làm gì đó nếu cần
                         })
                         .catch((error) => {
@@ -138,27 +145,22 @@ export default function FormAddHouse() {
                         });
                 });
 
+               setTimeout(()=> {
+                   dispatch(getHouses());
+                   console.log(1)
+                   toast.success("Đã thêm thành công");
+                   navigate("/");
+               },500)
                 // Chạy tất cả các promise để đợi thêm các đường dẫn hình ảnh hoàn tất
                 return Promise.all(addPicturePromises);
-            }).catch((e)=>{
-            console.log(e)
-        })
-
-            .then((res) => {
-                console.log(res)
-
-                // Tất cả ảnh đã được thêm vào nhà mới thành công
-                dispatch(getHouses());
-                toast.success("Đã thêm thành công");
-
-                navigate("/");
-            })
-            .catch((error) => {
-
-                console.error("Error adding house:", error);
-            });
+            }).catch((e) => {
+        }).then((res) => {
+            // console.log(res)
+            // Tất cả ảnh đã được thêm vào nhà mới thành công
+        }).catch((error) => {
+            console.error("Error adding house:", error);
+        });
     };
-
 
 
     useEffect(() => {
@@ -169,21 +171,22 @@ export default function FormAddHouse() {
     }, [imageUpload]);
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
+        const {name, value} = event.target;
         setValues({
             ...values,
+
             [name]: value,
         });
     };
 
     return (
         <div className="form-add-house">
-            <Navbar />
-            <h2>Thêm nhà mới</h2>
+            <Navbar/>
+            <h2>Đăng nhà cho thuê</h2>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
-                        sx={{ width: "500px" }}
+                        sx={{width: "500px"}}
                         label="Tên nhà"
                         name="name"
                         value={values.name}
@@ -193,7 +196,7 @@ export default function FormAddHouse() {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        sx={{ width: "500px" }}
+                        sx={{width: "500px"}}
                         label="Địa chỉ"
                         name="address"
                         value={values.address}
@@ -203,7 +206,7 @@ export default function FormAddHouse() {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        sx={{ width: "500px" }}
+                        sx={{width: "500px"}}
                         type="number"
                         label="Số Lượng phòng ngủ"
                         name="numberOfBedrooms"
@@ -214,7 +217,7 @@ export default function FormAddHouse() {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        sx={{ width: "500px" }}
+                        sx={{width: "500px"}}
                         type="number"
                         label="Số Lượng phòng tắm"
                         name="numberOfBathrooms"
@@ -225,7 +228,7 @@ export default function FormAddHouse() {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        sx={{ width: "500px" }}
+                        sx={{width: "500px"}}
                         label="Mô tả"
                         name="description"
                         value={values.description}
@@ -235,7 +238,7 @@ export default function FormAddHouse() {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        sx={{ width: "500px" }}
+                        sx={{width: "500px"}}
                         label="Giá tiền"
                         name="price"
                         value={values.price}
@@ -243,19 +246,19 @@ export default function FormAddHouse() {
                         required
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        sx={{ width: "500px" }}
-                        label="Trạng thái"
-                        name="status"
-                        value={values.status}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </Grid>
+                {/*<Grid item xs={12}>*/}
+                {/*    <TextField*/}
+                {/*        sx={{width: "500px"}}*/}
+                {/*        label="Trạng thái"*/}
+                {/*        name="status"*/}
+                {/*        value={values.status}*/}
+                {/*        onChange={handleInputChange}*/}
+                {/*        required*/}
+                {/*    />*/}
+                {/*</Grid>*/}
                 <Grid item xs={12}>
                     <input
-                        style={{ width: "500px" }}
+                        style={{width: "500px"}}
                         id="avatar"
                         type="file"
                         name="picture"
@@ -270,7 +273,7 @@ export default function FormAddHouse() {
                             <div
                                 className="progress-bar"
                                 role="progressbar"
-                                style={{ width: `${percent}%` }}
+                                style={{width: `${percent}%`}}
                                 aria-valuenow={percent}
                                 aria-valuemin={0}
                                 aria-valuemax={100}
@@ -282,14 +285,14 @@ export default function FormAddHouse() {
                     {imgStatus.length > 0 &&
                         !isLoading &&
                         imgStatus.map((url, index) => (
-                            <img key={index} src={url} alt={`Image ${index}`} />
+                            <img style={{width: "100px", height: "100px"}} key={index} src={url} alt={`Image ${index}`}/>
                         ))}
                 </Grid>
             </Grid>
             <Button
                 type="button"
                 variant="contained"
-                sx={{ marginTop: "10px", width: "500px" }}
+                sx={{marginTop: "10px", width: "500px"}}
                 onClick={handleAdd}
             >
                 Thêm nhà
