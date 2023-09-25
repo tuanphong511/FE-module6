@@ -2,12 +2,17 @@ import Navbar from "../../../components/navbar/Navbar";
 import StarIcon from '@mui/icons-material/Star';
 import Footer from "../../../components/footer/Footer";
 import { Button, InputAdornment, Modal, TextField } from "@mui/material";
-import BasicDateRangePicker from "../../../components/selectDatetime";
 import SendIcon from '@mui/icons-material/Send';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getHouseById, getHouses} from "../../../services/houseService";
 import {useParams} from "react-router-dom";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
+import {DateRangePicker} from "@mui/x-date-pickers-pro/DateRangePicker";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import * as React from "react";
+
 
 const style = {
     position: 'absolute',
@@ -21,6 +26,7 @@ const style = {
 };
 
 export default function DetailHouse() {
+    const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
     const {id} = useParams()
     const dispatch = useDispatch()
     const [house,setHouse]=useState("")
@@ -30,7 +36,22 @@ export default function DetailHouse() {
                 setHouse(res.payload.data)
             })
     }, [])
-    console.log(house)
+
+    const get_day_of_time = (d1, d2) => {
+        if (d1 && d2) {
+            let ms1 = d1.getTime();
+            let ms2 = d2.getTime();
+            return Math.ceil((ms2 - ms1) / (24 * 60 * 60 * 1000));
+        }
+    };
+    console.log(get_day_of_time(selectedDateRange[0]?.$d, selectedDateRange[1]?.$d))
+    let day = get_day_of_time(selectedDateRange[0]?.$d, selectedDateRange[1]?.$d)
+    let serviceCharge = 50
+
+    let result = house.price * day
+    let price = result + serviceCharge
+
+
 
 
 
@@ -68,30 +89,36 @@ export default function DetailHouse() {
                     <li data-target="#carouselExampleCaptions1" data-slide-to="0" className="active"></li>
                     <li data-target="#carouselExampleCaptions1" data-slide-to="1"></li>
                     <li data-target="#carouselExampleCaptions1" data-slide-to="2"></li>
+
                 </ol>
+                {house && (
+
+
                 <div className="carousel-inner" style={{ borderRadius: "10px" }}>
                     <div className="carousel-item active">
-                        <img src="https://www.homelane.com/blog/wp-content/uploads/2022/11/single-floor-house-design.jpg" className="d-block w-100" alt="..." />
+
+                        <img src={house.picture[0].picture} className="d-block w-100" alt="..." />
                         <div className="carousel-caption d-none d-md-block">
                             <h5>First slide label</h5>
                             <p>Some representative placeholder content for the first slide.</p>
                         </div>
                     </div>
                     <div className="carousel-item">
-                        <img src="https://www.homelane.com/blog/wp-content/uploads/2022/11/single-floor-house-design.jpg" className="d-block w-100" alt="..." />
+                        <img src={house.picture[1].picture} className="d-block w-100" alt="..." />
                         <div className="carousel-caption d-none d-md-block">
                             <h5>Second slide label</h5>
                             <p>Some representative placeholder content for the second slide.</p>
                         </div>
                     </div>
                     <div className="carousel-item">
-                        <img src="https://www.homelane.com/blog/wp-content/uploads/2022/11/single-floor-house-design.jpg" className="d-block w-100" alt="..." />
+                        <img src={house.picture[2].picture} className="d-block w-100" alt="..." />
                         <div className="carousel-caption d-none d-md-block">
                             <h5>Third slide label</h5>
                             <p>Some representative placeholder content for the third slide.</p>
                         </div>
                     </div>
                 </div>
+                )}
             </div>
             <button className="carousel-control-prev" type="button" data-target="#carouselExampleCaptions1" data-slide="prev" style={{ top: "475px", right: "30px" }}>
                 <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -120,12 +147,6 @@ export default function DetailHouse() {
                     </div>
                     <div style={{ border: "0.5px solid gray", width: "100%", margin: "20px 0" }}></div>
                     <div style={{ textAlign: "left" }}>
-                        {/*Một số thông tin đã được dịch tự động. Hiển thị ngôn ngữ gốc*/}
-                        {/*Đây là nhà gỗ 4 phòng ngủ chất lượng cao và được trang bị đầy đủ tiện nghi tại khu nghỉ dưỡng trượt tuyết Lapland xinh đẹp và khu nghỉ dưỡng trượt tuyết lớn nhất Phần Lan Levi.*/}
-
-                        {/*200m đến dốc, trạm xe buýt trượt tuyết bên cạnh và làng Levi cách đó 10 phút.*/}
-
-                        {/*Nhà gỗ chalet có bếp/phòng chờ mở rộng rãi, với cửa sổ lớn để tận hưởng tầm nhìn đẹp.*/}
                         {house.description}
                     </div>
                 </div>
@@ -133,7 +154,7 @@ export default function DetailHouse() {
                     <div style={{ width: "370px", height: "460px", border: "0.5px solid gray", borderRadius: "10px", padding: "24px", boxShadow: "1px 2px 9px #DADADA" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                             <div>
-                                {house.price}/ đêm
+                                {house.price}$/ đêm
                             </div>
                             <div style={{ display: "flex" }}>
                                 <div>
@@ -145,7 +166,15 @@ export default function DetailHouse() {
                             </div>
                         </div>
                         <div style={{ display: "flex", borderRadius: "10px", textAlign: "center", marginTop: "20px" }}>
-                            <BasicDateRangePicker />
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DemoContainer components={['DateRangePicker']}>
+                                    <DateRangePicker
+                                        localeText={{ start: 'Check-in', end: 'Check-out' }}
+                                        value={selectedDateRange}
+                                        onChange={(newDateRange) => setSelectedDateRange(newDateRange)}
+                                    />
+                                </DemoContainer>
+                            </LocalizationProvider>
                         </div>
                         <div>
                             <Button
@@ -157,10 +186,10 @@ export default function DetailHouse() {
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", marginTop: "15%" }}>
                             <div>
-                                $... x ... đêm
+                                {house.price}$/đêm x {day}
                             </div>
                             <div>
-                                $Tổng
+                                {result}$
                             </div>
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", marginTop: "3%" }}>
@@ -168,7 +197,7 @@ export default function DetailHouse() {
                                 Phí dịch vụ
                             </div>
                             <div>
-                                $...
+                                {serviceCharge}$
                             </div>
                         </div>
                         <div style={{ border: "0.5px solid gray", width: "100%", marginTop: "10%" }}></div>
@@ -177,7 +206,7 @@ export default function DetailHouse() {
                                 Tổng tiền
                             </div>
                             <div>
-                                $...
+                                {price}$
                             </div>
                         </div>
                     </div>
