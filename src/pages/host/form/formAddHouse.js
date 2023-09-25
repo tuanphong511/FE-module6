@@ -113,7 +113,7 @@ export default function FormAddHouse() {
 
         dispatch(addHouses(houseData))
             .then((houseRes) => {
-                console.log(houseRes.payload.id)
+                console.log(houseRes)
                 // Lấy id của nhà mới được tạo
                 newHouseId = 1
 
@@ -150,8 +150,10 @@ export default function FormAddHouse() {
                 // Tất cả ảnh đã được thêm vào nhà mới thành công
                 dispatch(getHouses());
                 toast.success("Đã thêm thành công");
-
-                navigate("/");
+                setTimeout(()=>{
+                    navigate("/");
+                },3000)
+               
             })
             .catch((error) => {
 

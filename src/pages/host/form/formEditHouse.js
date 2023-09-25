@@ -59,6 +59,7 @@ export default function FormEditHouse() {
             customAxios.get(`/houses/?id=${id}`).then(res => {
                 setValues(res.data[0])
                 console.log("res", res)
+                return res.data
             })
         }
         catch (err) {

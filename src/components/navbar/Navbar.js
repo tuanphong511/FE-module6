@@ -16,6 +16,8 @@ import Profile from "../../pages/proFile/Profile";
 import {useState} from "react";
 import {useSelector} from "react-redux";
 
+
+
 export default function Navbar() {
     const [open, setOpen] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false); // State để theo dõi trạng thái đăng nhập
@@ -81,8 +83,9 @@ export default function Navbar() {
                                 id="outlined-basic"
                                 placeholder="Tìm kiếm"
                                 InputProps={{
+                                     
                                     startAdornment: (
-                                        <InputAdornment position="end">
+                                        <InputAdornment position="end">                                                                                                                                                                                                                                                     
                                             <SearchIcon />
                                         </InputAdornment>
                                     ),

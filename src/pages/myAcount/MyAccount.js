@@ -46,15 +46,17 @@ export default function MyAccount(props) {
         }
 
         const id = user.message.token.idUser;
+        console.log(id)
 
         customAxios(`/users/?id=${id}`).then((res) => {
             setCurrentUser(res.data);
+            console.log(res.data)
             // Lấy dữ liệu người dùng (chẳng hạn, thông tin về mật khẩu hiện tại) từ API
         }).catch((error) => {
             console.error(error);
             // Handle error when unable to fetch user data
         });
-    }, [user, navigate]);
+    }, []);
 
     const handlePasswordChange = () => {
         console.log(currentPassword)

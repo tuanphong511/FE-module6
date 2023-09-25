@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {addPictures, getPicture} from "../services/pictureService";
 
 const initialState = {
-    houses: []
+    pictures: []
 }
 const pictureSlice =createSlice({
     name: 'pictures',
