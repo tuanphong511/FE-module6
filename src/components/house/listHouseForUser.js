@@ -5,25 +5,25 @@ import {getHouses} from "../../services/houseService";
 import Button from "@mui/material/Button";
 import {Link, useNavigate} from "react-router-dom";
 import {login} from "../../services/userService";
-export default function ListHouse() {
+export default function ListHouseForUser() {
     // const houses = useSelector((state) =>{
     //     console.log(state,"state")
     //     return state.houses.houses
     // })
     // console.log(houses,"house")
-    const user = useSelector(state => {
-        if (state.user && state.user.user && state.user.user.message) {
-            return state.user.user.message.token.idUser;
-        }
-        // Nếu bất kỳ một phần nào đó bị thiếu, trả về giá trị mặc định hoặc null
-        return null;
-    });
+    // const user = useSelector(state => {
+    //     if (state.user && state.user.user && state.user.user.message) {
+    //         return state.user.user.message.token.idUser;
+    //     }
+    //     // Nếu bất kỳ một phần nào đó bị thiếu, trả về giá trị mặc định hoặc null
+    //     return null;
+    // });
 
 
     const navigate = useNavigate();
 
-    const handleDetail = (id) => {
-        navigate('/detail/house/'+id);
+    const handleDetail = () => {
+        navigate('/detail/house');
     }
 
     const dispatch = useDispatch()
@@ -31,16 +31,14 @@ export default function ListHouse() {
     useEffect(() =>{
         dispatch(getHouses())
             .then(res=>{
-            setHouses(res.payload)
-        })
+                setHouses(res.payload)
+            })
     }, [houses])
 
 
     return (
         <>
-            { houses && houses.map((item, key) => {
-                if( item.user.id === user) {
-                    return(
+            { houses && houses.map((item, key) => (
                         <div className="col-3 p-5" style={{cursor: "pointer", marginTop: "10px"}} key={key}>
                             <div className="card" style={{width: "20rem", borderRadius: "10px"}}>
                                 <div id={`home${key}`} className="carousel slide" data-ride="carousel">
@@ -54,8 +52,8 @@ export default function ListHouse() {
                                             ></li>
                                         ))}
                                     </ol>
-                                    <div className="carousel-inner" onClick={() => {
-                                        handleDetail(item.id)
+                                    <div className="carousel-inner" onClick={(e) => {
+                                        handleDetail(e)
                                     }}>
                                         {item.picture.map((picture, index) => (
                                             <div
@@ -102,16 +100,12 @@ export default function ListHouse() {
                                 </div>
                             </div>
                         </div>
-                    )
-                }else {
-                    return (
-                       <></>
-                    )
-                }
 
 
 
-            })}
+
+
+            ))}
 
         </>
     )

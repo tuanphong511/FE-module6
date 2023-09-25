@@ -149,7 +149,7 @@ export default function FormAddHouse() {
                    dispatch(getHouses());
                    console.log(1)
                    toast.success("Đã thêm thành công");
-                   navigate("/");
+                   navigate("/list-houses");
                },500)
                 // Chạy tất cả các promise để đợi thêm các đường dẫn hình ảnh hoàn tất
                 return Promise.all(addPicturePromises);

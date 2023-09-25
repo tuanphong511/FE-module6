@@ -30,4 +30,10 @@ export const updateHouses = createAsyncThunk(
         return res
     }
 )
+export const getHouseById = createAsyncThunk(
+    'house/getHouse',
+    async (id) =>{
+        return await axios.get(`http://localhost:5000/houses/${id}`)
+    }
+)
 
