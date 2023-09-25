@@ -78,7 +78,7 @@ export default function Navbar() {
                                 id="outlined-basic"
                                 placeholder="Tìm kiếm"
                                 InputProps={{
-                                    startAdornment: (
+                                    endAdornment: (
                                         <InputAdornment position="end">
                                             <SearchIcon />
                                         </InputAdornment>

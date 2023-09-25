@@ -266,7 +266,7 @@ export default function FormAddHouse() {
                         required
                     />
                     {isLoading && (
-                        <div className="progress">
+                        <div className="progress" style={{ width: "500px" }}>
                             <div
                                 className="progress-bar"
                                 role="progressbar"
