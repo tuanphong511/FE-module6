@@ -22,8 +22,8 @@ export default function ListHouseForUser() {
 
     const navigate = useNavigate();
 
-    const handleDetail = () => {
-        navigate('/detail/house');
+    const handleDetail = (id) => {
+        navigate('/detail/house/'+id);
     }
 
     const dispatch = useDispatch()
@@ -39,6 +39,7 @@ export default function ListHouseForUser() {
     return (
         <>
             { houses && houses.map((item, key) => (
+
                         <div className="col-3 p-5" style={{cursor: "pointer", marginTop: "10px"}} key={key}>
                             <div className="card" style={{width: "20rem", borderRadius: "10px"}}>
                                 <div id={`home${key}`} className="carousel slide" data-ride="carousel">
@@ -52,8 +53,9 @@ export default function ListHouseForUser() {
                                             ></li>
                                         ))}
                                     </ol>
-                                    <div className="carousel-inner" onClick={(e) => {
-                                        handleDetail(e)
+                                    <div className="carousel-inner" onClick={() => {
+                                        // console.log(e,"e")
+                                        handleDetail(item.id)
                                     }}>
                                         {item.picture.map((picture, index) => (
                                             <div
