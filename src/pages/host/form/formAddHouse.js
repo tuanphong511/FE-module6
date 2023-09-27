@@ -24,9 +24,7 @@ export default function FormAddHouse() {
         price: "",
         status: "",
         rentals:"",
-        user : {
-            id : 1
-        }
+       
     });
 
     const [imgStatus, setImgStatus] = useState([]);
@@ -127,6 +125,7 @@ export default function FormAddHouse() {
                 newHouseId = 1
                 // Tạo mảng promise để thêm các đường dẫn hình ảnh vào bảng Picture
                 const addPicturePromises = imgStatus.map((imageUrl) => {
+                    
 
                     // Thêm id của nhà vào dữ liệu ảnh
                     const pictureData = {

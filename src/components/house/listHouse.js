@@ -5,6 +5,7 @@ import {getHouses} from "../../services/houseService";
 import Button from "@mui/material/Button";
 import {Link, useNavigate} from "react-router-dom";
 import {login} from "../../services/userService";
+import { getPicture } from "../../services/pictureService";
 export default function ListHouse() {
     // const houses = useSelector((state) =>{
     //     console.log(state,"state")
@@ -26,14 +27,16 @@ export default function ListHouse() {
         navigate('/detail/house/host/'+id);
     }
 
+    
+
     const dispatch = useDispatch()
     const [houses,setHouses]=useState([])
     useEffect(() =>{
-        dispatch(getHouses())
-            .then(res=>{
-            setHouses(res.payload)
-        })
-    }, [houses])
+        // dispatch(getHouses())
+        //     .then(res=>{
+        //     setHouses(res.payload)
+        // })
+    }, [])
 
 
     return (

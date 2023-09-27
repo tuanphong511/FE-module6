@@ -19,6 +19,7 @@ import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { useDispatch } from "react-redux";
 import { handleSearch } from "../../services/houseService";
+import dayjs from "dayjs";
 
 const style = {
     position: "absolute",
@@ -33,33 +34,53 @@ const style = {
 };
 
 export default function FunctionBar() {
+    const [time, setTime] = useState([dayjs(), dayjs()]);
+    const [homeName, setHomeName] = useState('');
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [bath, setBath] = React.useState("");
     const [bad, setBad] = React.useState("");
-    const [searchAddress, setSearchAddress] = useState("");
-    const [address, setaddress] = useState([]);
+    const [address, setAddress] = useState("");
+    const [houses, setHouses] = useState([]);
+
 
     console.log(bath, "bath");
     console.log(bad, "bad");
-    const handleBath = (event) => {
-        setBath(event.target.value);
-    };
-    const handleBad = (event) => {
-        setBad(event.target.value);
-    };
+
     const dispatch = useDispatch();
-    const hand = () => {
-        dispatch(handleSearch(searchAddress)).then((res) => {
-            setaddress(res.payload.data);
+    const onSubmit = () => {
+      const [startTime, endTime] = time;
+        const dataSearch = {
+          address,
+          homeName,
+          bath,
+          bad,
+          startTime: startTime.format('YYYY-MM-DD HH:mm'),
+          endTime: endTime.format('YYYY-MM-DD HH:mm')
+        }
+        console.log(dataSearch,'click');
+        dispatch(handleSearch(dataSearch)).then((res) => {
+          console.log(res.payload.data, 'res');
+            // setaddress(res.payload.data);
+            setHouses(res.payload.data);
+            console.log(houses, 'houses');
         });
     };
+
+    const searchHouses = houses.map((house, i) => {
+      return (
+        <div>
+          { house.name } - { house.address }
+        </div>
+      );
+    });
     // useEffect(() => {
 
     // }, [searchAddress]);
     return (
         <div className={"col-12"}>
+          
             <div className="btn-search-category">
         <span>
           <img
@@ -94,17 +115,21 @@ export default function FunctionBar() {
               >
                 Bộ Lọc
               </Typography>
+              { searchHouses }
               <Typography sx={{ marginRight: " 442px" }}></Typography>
-
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={["DateRangePicker"]}>
         <DateRangePicker
+            value={time}
+            onChange={(newValue) => setTime(newValue)}
             localeText={{ start: "Check-in", end: "Check-out" }}
         />
                 </DemoContainer>
               </LocalizationProvider>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 <TextField
+                    value={ homeName }
+                    onChange={(event) => setHomeName(event.target.value)}
                     id="outlined-basic"
                     label="Tên nhà"
                     variant="outlined"
@@ -119,8 +144,8 @@ export default function FunctionBar() {
                     variant="outlined"
                     sx={{ marginRight: "68%", width: " 100%" }}
                     type="text"
-                    value={searchAddress}
-                    onChange={(e) => setSearchAddress(e.target.value)}
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                 />
               </Typography>
 
@@ -133,7 +158,7 @@ export default function FunctionBar() {
                     id="demo-simple-select"
                     value={bad}
                     label="Số lượng phòng ngủ"
-                    onChange={handleBad}
+                    onChange={(e) => setBad(e.target.value)}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -153,7 +178,7 @@ export default function FunctionBar() {
                     id="demo-simple-select"
                     value={bath}
                     label="Số lượng phòng tắm"
-                    onChange={handleBath}
+                    onChange={(e) => setBath(e.target.value)}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -167,7 +192,7 @@ export default function FunctionBar() {
               <Button
                   variant="contained"
                   sx={{ mt: 2, width: "100%" }}
-                  onClick={hand}
+                  onClick={() => onSubmit()}
               >
                 Hiển thị kết quả
               </Button>
