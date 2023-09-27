@@ -54,7 +54,7 @@ export default function ListHouseForUser() {
                                         ))}
                                     </ol>
                                     <div className="carousel-inner" onClick={() => {
-                                        // console.log(e,"e")
+
                                         handleDetail(item.id)
                                     }}>
                                         {item.picture.map((picture, index) => (
@@ -95,11 +95,7 @@ export default function ListHouseForUser() {
                                     <h5 className="card-title">{item.price} / đêm</h5>
                                     <p className="card-text">{item.description}</p>
                                 </div>
-                                <div>
-                                    <Link to={`/edit-houses/${item.id}`}>
-                                        <Button variant="text">Sửa</Button>
-                                    </Link>
-                                </div>
+
                             </div>
                         </div>
 

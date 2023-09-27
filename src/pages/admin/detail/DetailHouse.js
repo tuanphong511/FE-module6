@@ -83,7 +83,7 @@ export default function DetailHouse() {
                 totalMoney,
                 rentalTime,
                 status: "Chờ nhận phòng",
-                action: "Checkin",
+                action: " ",
                 user: { id: a.message.token.idUser },
                 house: house.id
                 // Thêm các thông tin khác cần thiết cho đặt hàng

@@ -29,6 +29,7 @@ const style = {
 };
 
 export default function DetailHouseForHost() {
+
     // const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
     const {id} = useParams()
 
@@ -53,7 +54,6 @@ export default function DetailHouseForHost() {
     // let serviceCharge = 50
     // let result = house.price * day
     // let price = result + serviceCharge
-
 
 
     return (
@@ -91,8 +91,6 @@ export default function DetailHouseForHost() {
 
                     </ol>
                     {house && (
-
-
                         <div className="carousel-inner" style={{borderRadius: "10px"}}>
                             <div className="carousel-item active">
 
@@ -137,10 +135,10 @@ export default function DetailHouseForHost() {
                         <div style={{display: "flex"}}>
 
                             <div>
-                                {house.numberOfBedrooms}
+                                {house.numberOfBedrooms} phòng ngủ
                             </div>
-                            <div>
-                                {house.numberOfBathrooms}
+                            <div style={{marginLeft:"10px"}}>
+                                {house.numberOfBathrooms} phòng tắm
                             </div>
                             {/*<div>*/}
                             {/*    1 phòng tắm đầy đủ và 1 phòng vệ sinh cơ bản riêng*/}
@@ -154,7 +152,7 @@ export default function DetailHouseForHost() {
                     <div className="col-4">
                         <div style={{
                             width: "370px",
-                            height: "460px",
+                            height: "500px",
                             border: "0.5px solid gray",
                             borderRadius: "10px",
                             padding: "24px",
@@ -194,55 +192,67 @@ export default function DetailHouseForHost() {
                                 {/*    Thuê Phòng*/}
                                 {/*</Button>*/}
                             </div>
-                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
-                                <div>
-                                    Check in:
+                            {house && (
+                            <div>
+                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
+
+                                    <div>
+                                        Check in:
+                                    </div>
+                                    <div>
+                                        {house.order[0].checkIn}
+                                    </div>
                                 </div>
-                                <div>
-                                    {house.order.checkIn}
+                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
+                                    <div>
+                                        Check out:
+                                    </div>
+                                    <div>
+                                        {house.order[0].checkOut}
+
+                                    </div>
+                                </div>
+                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
+                                    <div>
+                                        Số ngày thuê
+                                    </div>
+                                    <div>
+                                        {house.order[0].rentalTime} ngày
+                                    </div>
+                                </div>
+                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
+                                    <div>
+                                        Tổng tiền:
+                                    </div>
+                                    <div>
+                                        {house.order[0].totalMoney} $
+                                    </div>
+                                </div>
+                                {/*<div style={{border: "0.5px solid gray", width: "100%", marginTop: "10%"}}></div>*/}
+                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
+                                    <div>
+                                        Trạng thái:
+                                    </div>
+                                    <div>
+                                        {house.order[0].status}
+                                    </div>
+                                </div>
+                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
+                                    <div>
+                                        Hành động
+                                    </div>
+                                    <div>
+                                        {/*{house.order[0].action}*/}
+                                        <Button variant="outlined" size="small">
+                                            Check In
+                                        </Button>
+                                        <Button variant="outlined" size="small" style={{marginLeft:"10px"}}>
+                                            Check Out
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
-                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
-                                <div>
-                                    Check out:
-                                </div>
-                                <div>
-                                    {house.order.checkOut}
-                                </div>
-                            </div>
-                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
-                                <div>
-                                    Số ngày thuê
-                                </div>
-                                <div>
-                                    {house.order.rentalTime}
-                                </div>
-                            </div>
-                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "3%"}}>
-                                <div>
-                                    Tổng tiền:
-                                </div>
-                                <div>
-                                    {house.order.totalMoney}
-                                </div>
-                            </div>
-                            {/*<div style={{border: "0.5px solid gray", width: "100%", marginTop: "10%"}}></div>*/}
-                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "10%"}}>
-                                <div>
-                                    Trạng thái:
-                                </div>
-                                <div>
-                                    {house.order.status}
-                                </div>
-                            </div>
-                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
-                                <div>
-                                    Hành dộng
-                                </div>
-                                <div>
-                                    {house.order.action}
-                                </div>
-                            </div>
+                        )}
                         </div>
                     </div>
                 </div>
@@ -377,20 +387,20 @@ export default function DetailHouseForHost() {
                             </div>
                         </div>
                         <div className="col-7" style={{textAlign: "left", maxWidth: "27%", marginLeft: "10%"}}>
-                            <div style={{paddingBottom: "16px"}}>
-                                Tỉ lệ phản hồi: 100%
-                            </div>
-                            <div style={{paddingBottom: "16px"}}>
-                                Thời gian phản hồi: trong vòng một giờ
-                            </div>
-                            <div>
-                                <Button
-                                    variant="contained"
-                                    type="button"
-                                >
-                                    Liên hệ với chủ nhà
-                                </Button>
-                            </div>
+                            {/*<div style={{paddingBottom: "16px"}}>*/}
+                            {/*    Tỉ lệ phản hồi: 100%*/}
+                            {/*</div>*/}
+                            {/*<div style={{paddingBottom: "16px"}}>*/}
+                            {/*    Thời gian phản hồi: trong vòng một giờ*/}
+                            {/*</div>*/}
+                            {/*<div>*/}
+                            {/*    <Button*/}
+                            {/*        variant="contained"*/}
+                            {/*        type="button"*/}
+                            {/*    >*/}
+                            {/*        Liên hệ với chủ nhà*/}
+                            {/*    </Button>*/}
+                            {/*</div>*/}
                         </div>
                     </div>
                 </div>

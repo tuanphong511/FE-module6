@@ -23,7 +23,7 @@ export default function ListHouse() {
     const navigate = useNavigate();
 
     const handleDetail = (id) => {
-        navigate('/detail/house/'+id);
+        navigate('/detail/house/host/'+id);
     }
 
     const dispatch = useDispatch()

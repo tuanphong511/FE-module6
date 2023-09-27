@@ -69,7 +69,7 @@ export default function Register({setLogin}) {
     const checkValidation = (value) => {
         setConfirmPassword(value)
         if (password !== value) {
-            setIsError("Confirm Password should be match witch password")
+            setIsError("Mật khẩu ko trùng khớp")
         } else if (password === value) {
             setIsError("Đã trùng khớp")
         }
