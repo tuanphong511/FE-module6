@@ -15,6 +15,8 @@ import DetailHouse from "./pages/admin/detail/DetailHouse";
 import FormEditHouse from "./pages/host/form/formEditHouse";
 import ListHouseForUser from "./components/house/listHouseForUser";
 import ListHouse from "./components/house/listHouse";
+import ListOrder from "./pages/host/order/Order";
+import DetailHouseForHost from "./pages/admin/detail/DetailHouseForHost";
 
 function App() {
 
@@ -33,6 +35,8 @@ function App() {
                 <Route path={'/list/host'} element={<ListHost/>}></Route>
                 <Route path={'/list/user'} element={<ListUser/>}></Route>
                 <Route path={'/list-houses'} element={<ListHouse/>}></Route>
+                <Route path={'/order'} element={<ListOrder/>}></Route>
+                <Route path={'/detail/house/host/:id'} element={<DetailHouseForHost/>}></Route>
                 {/*<Route path={'/list/houses'} element={<ListHouseForUser/>}></Route>*/}
                 {/*<Route path={'/list/houses'} element={<ListHouseForUser/>}></Route>*/}
             </Routes>

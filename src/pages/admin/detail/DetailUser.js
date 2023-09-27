@@ -1,10 +1,10 @@
 import "../../../style.css";
-import {useDispatch} from "react-redux";
-import {useEffect, useState} from "react";
-import {getUser} from "../../../services/userService";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { getUser } from "../../../services/userService";
 import Button from "@mui/material/Button";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Navbar from "../../../components/navbar/Navbar";
 
 export default function DetailUser() {
@@ -12,7 +12,7 @@ export default function DetailUser() {
     const [listUser, setListUser] = useState()
 
 
-    useEffect(() =>{
+    useEffect(() => {
         dispatch(getUser())
             .then((response) => {
                 console.log(response)
@@ -26,30 +26,29 @@ export default function DetailUser() {
     }, [dispatch])
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             <h3 style={{ marginTop: "20px" }}>Thông tin người dùng</h3>
 
             <div className="list-frame">
-                <table class="table">
-
-                                <thead >
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Ảnh đại diện</th>
-                                    <th scope="col">tên tài khoản</th>
-                                    <th scope="col">số điện thoại</th>
-                                    <th scope="col">Trạng thái</th>
-                                    <th scope="col">Số tiền đã chi tiêu</th>
-                                    <th scope="col">Lịch sử thuê nhà</th>
-                                </tr>
-                                </thead>
-                    { listUser && listUser.map((item,key) => {
+                <table className="table">
+                    <thead >
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Ảnh đại diện</th>
+                        <th scope="col">Tên tài khoản</th>
+                        <th scope="col">Số điện thoại</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Số tiền đã chi tiêu</th>
+                        <th scope="col">Lịch sử thuê nhà</th>
+                    </tr>
+                    </thead>
+                    {listUser && listUser.map((item, key) => {
                         if (item.role === 'Người dùng') {
-                            return(<>
+                            return (<>
                                 <tbody >
                                 <tr key={key}>
                                     <th scope="row">{item.id}</th>
-                                    <td>ảnh</td>
+                                    <td><img src={item.avatar} alt="" width="100" /></td>
                                     <td>{item.username}</td>
                                     <td>{item.telephone}</td>
                                     <td>{item.status}</td>
@@ -62,20 +61,20 @@ export default function DetailUser() {
                     })}
                 </table>
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
+                    <ul className="pagination">
+                        <li className="page-item">
+                            <a className="page-link" href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
+                                <span className="sr-only">Previous</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
+                        <li className="page-item"><a className="page-link" href="#">1</a></li>
+                        <li className="page-item"><a className="page-link" href="#">2</a></li>
+                        <li className="page-item"><a className="page-link" href="#">3</a></li>
+                        <li className="page-item">
+                            <a className="page-link" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
+                                <span className="sr-only">Next</span>
                             </a>
                         </li>
                     </ul>

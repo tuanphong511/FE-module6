@@ -15,7 +15,6 @@ import * as React from "react";
 import {number} from "yup";
 import {addOrders, getOrder} from "../../../services/orderService";
 import {toast} from "react-toastify";
-import NavbarForUser from "../../../components/navbar/NavbarForUser";
 
 
 const style = {
@@ -29,8 +28,8 @@ const style = {
     p: 4,
 };
 
-export default function DetailHouse() {
-    const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
+export default function DetailHouseForHost() {
+    // const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
     const {id} = useParams()
 
     const dispatch = useDispatch()
@@ -39,73 +38,21 @@ export default function DetailHouse() {
         dispatch(getHouseById(id))
             .then(res => {
                 setHouse(res.payload.data)
-                console.log(res)
             })
     }, [])
 
-    const get_day_of_time = (d1, d2) => {
-        if (d1 && d2) {
-            let ms1 = d1.getTime();
-            let ms2 = d2.getTime();
-            return Math.ceil((ms2 - ms1) / (24 * 60 * 60 * 1000));
-        }
-    };
-    console.log(get_day_of_time(selectedDateRange[0]?.$d, selectedDateRange[1]?.$d))
-    let day = get_day_of_time(selectedDateRange[0]?.$d, selectedDateRange[1]?.$d)
-    let serviceCharge = 50
-    let result = house.price * day
-    let price = result + serviceCharge
-    const a = JSON.parse(localStorage.getItem("user"));
-
-    const [order , setOrder] =useState({
-
-        checkIn:null,
-        checkOut:null,
-        rentalTime:"",
-        totalMoney:"",
-        status: "",
-        action: "",
-
-    })
-    const navigate = useNavigate()
-    const handleAddOrder = () => {
-        // Kiểm tra xem đã chọn ngày đặt và ngày trả phòng chưa
-        if (selectedDateRange[0] && selectedDateRange[1]) {
-            const checkIn = selectedDateRange[0].$d; // Ngày đặt
-            const checkOut = selectedDateRange[1].$d; // Ngày trả phòng
-            const totalMoney = price; // Giá tổng cộng
-            const rentalTime = day
-
-            // Tạo đối tượng đặt hàng
-            const newOrder = {
-                checkIn,
-                checkOut,
-                totalMoney,
-                rentalTime,
-                status: "Chờ nhận phòng",
-                action: "Checkin",
-                user: { id: a.message.token.idUser },
-                house: house.id
-                // Thêm các thông tin khác cần thiết cho đặt hàng
-            };
-
-            // Cập nhật state order
-            // setOrder(newOrder);
-            dispatch(addOrders(newOrder)).then((res) => {
-                dispatch(getOrder());
-                navigate("/detail/house/:id");
-                toast.success("Đã đặt phòng thành công");
-            });
-
-            // Đẩy thông tin đặt hàng lên bảng order hoặc gửi lên server
-            // Ví dụ:
-            // postOrderToServer(newOrder);
-        } else {
-            // Xử lý trường hợp người dùng chưa chọn đủ thông tin
-            alert("Vui lòng chọn ngày đặt và ngày trả phòng.");
-        }
-    };
-
+    // const get_day_of_time = (d1, d2) => {
+    //     if (d1 && d2) {
+    //         let ms1 = d1.getTime();
+    //         let ms2 = d2.getTime();
+    //         return Math.ceil((ms2 - ms1) / (24 * 60 * 60 * 1000));
+    //     }
+    // };
+    // console.log(get_day_of_time(selectedDateRange[0]?.$d, selectedDateRange[1]?.$d))
+    // let day = get_day_of_time(selectedDateRange[0]?.$d, selectedDateRange[1]?.$d)
+    // let serviceCharge = 50
+    // let result = house.price * day
+    // let price = result + serviceCharge
 
 
 
@@ -113,7 +60,7 @@ export default function DetailHouse() {
         <div>
             <div className="row">
                 <div className="col-12">
-                    <NavbarForUser/>
+                    <Navbar/>
                 </div>
                 <div className="col-12" style={{padding: "0 6.5%", marginTop: "15px"}}>
                     <div style={{display: "flex", padding: "0 24px"}}>
@@ -130,9 +77,9 @@ export default function DetailHouse() {
                             1 đánh giá .
                         </viv>
 
-                        <div>
-                            {house.address}
-                        </div>
+                        {/*<div>*/}
+                        {/*    {house.order.rentalTime}*/}
+                        {/*</div>*/}
                     </div>
                 </div>
                 <div id="carouselExampleCaptions1" className="carousel slide" data-ride="carousel"
@@ -190,11 +137,10 @@ export default function DetailHouse() {
                         <div style={{display: "flex"}}>
 
                             <div>
-                                {house.numberOfBedrooms} phòng ngủ
+                                {house.numberOfBedrooms}
                             </div>
-
-                            <div style={{marginLeft:"10px"}}>
-                                {house.numberOfBathrooms} phòng tắm
+                            <div>
+                                {house.numberOfBathrooms}
                             </div>
                             {/*<div>*/}
                             {/*    1 phòng tắm đầy đủ và 1 phòng vệ sinh cơ bản riêng*/}
@@ -227,50 +173,74 @@ export default function DetailHouse() {
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                style={{display: "flex", borderRadius: "10px", textAlign: "center", marginTop: "20px"}}>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DateRangePicker']}>
-                                        <DateRangePicker
-                                            localeText={{start: 'Check-in', end: 'Check-out'}}
-                                            value={selectedDateRange}
-                                            onChange={(newDateRange) => setSelectedDateRange(newDateRange)}
-                                        />
-                                    </DemoContainer>
-                                </LocalizationProvider>
-                            </div>
+                            {/*<div*/}
+                            {/*    style={{display: "flex", borderRadius: "10px", textAlign: "center", marginTop: "20px"}}>*/}
+                            {/*    <LocalizationProvider dateAdapter={AdapterDayjs}>*/}
+                            {/*        <DemoContainer components={['DateRangePicker']}>*/}
+                            {/*            <DateRangePicker*/}
+                            {/*                localeText={{start: 'Check-in', end: 'Check-out'}}*/}
+                            {/*                value={selectedDateRange}*/}
+                            {/*                onChange={(newDateRange) => setSelectedDateRange(newDateRange)}*/}
+                            {/*            />*/}
+                            {/*        </DemoContainer>*/}
+                            {/*    </LocalizationProvider>*/}
+                            {/*</div>*/}
                             <div>
-                                <Button
-                                    variant="contained"
-                                    sx={{width: "100%", top: "15px"}}
-                                    onClick={handleAddOrder}
-                                >
-                                    Thuê Phòng
-                                </Button>
+                                {/*<Button*/}
+                                {/*    variant="contained"*/}
+                                {/*    sx={{width: "100%", top: "15px"}}*/}
+                                {/*    onClick={handleAddOrder}*/}
+                                {/*>*/}
+                                {/*    Thuê Phòng*/}
+                                {/*</Button>*/}
                             </div>
                             <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
                                 <div>
-                                    {house.price}$/đêm x {day}
+                                    Check in:
                                 </div>
                                 <div>
-                                    {(isNaN(result)) ? "0" : result}$
+                                    {house.order.checkIn}
+                                </div>
+                            </div>
+                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
+                                <div>
+                                    Check out:
+                                </div>
+                                <div>
+                                    {house.order.checkOut}
+                                </div>
+                            </div>
+                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
+                                <div>
+                                    Số ngày thuê
+                                </div>
+                                <div>
+                                    {house.order.rentalTime}
                                 </div>
                             </div>
                             <div style={{display: "flex", justifyContent: "space-between", marginTop: "3%"}}>
                                 <div>
-                                    Phí dịch vụ
+                                    Tổng tiền:
                                 </div>
                                 <div>
-                                    {serviceCharge}$
+                                    {house.order.totalMoney}
                                 </div>
                             </div>
-                            <div style={{border: "0.5px solid gray", width: "100%", marginTop: "10%"}}></div>
+                            {/*<div style={{border: "0.5px solid gray", width: "100%", marginTop: "10%"}}></div>*/}
                             <div style={{display: "flex", justifyContent: "space-between", marginTop: "10%"}}>
                                 <div>
-                                    Tổng tiền
+                                    Trạng thái:
                                 </div>
                                 <div>
-                                    {(isNaN(price)) ? "0" : price}$
+                                    {house.order.status}
+                                </div>
+                            </div>
+                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
+                                <div>
+                                    Hành dộng
+                                </div>
+                                <div>
+                                    {house.order.action}
                                 </div>
                             </div>
                         </div>

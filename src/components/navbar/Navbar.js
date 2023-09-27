@@ -45,6 +45,9 @@ export default function Navbar() {
     const handleAddHouse = () => {
         navigate("/houses")
     }
+    const orderHouse = () =>{
+        navigate("/order")
+    }
     React.useEffect(() => {
         console.log(user)
         if (user && !loggedIn) {
@@ -123,6 +126,7 @@ export default function Navbar() {
 
 
                                              <hr style={{width: "100%", margin: "5px"}}/>
+                                        <MenuItem onClick={orderHouse}>Những nhà cho thuê</MenuItem>
 
 
                                         <MenuItem onClick={() => {

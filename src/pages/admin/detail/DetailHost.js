@@ -26,15 +26,15 @@ export default function DetailHost() {
     }, [dispatch])
     return (
         <div>
-           <Navbar/>
+            <Navbar/>
             <h3 style={{ marginTop: "20px" }}>Thông tin chủ nhà</h3>
 
             <div className="list-frame">
-                <table class="table">
+                <table className="table">
 
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">ID</th>
                         <th scope="col">Ảnh đại diện</th>
                         <th scope="col">Tên tài khoản</th>
                         <th scope="col">Số điện thoại</th>
@@ -47,25 +47,25 @@ export default function DetailHost() {
                     {listUser && listUser.map((item, key) =>{
                         if(item.role === 'Người cho thuê') {
                             return(
-                            <tbody>
-                            <tr>
-                                <th scope="row">{item.id}</th>
-                                <td>ảnh</td>
-                                <td>{item.username}</td>
-                                <td>{item.telephone}</td>
-                                <td>{item.status}</td>
-                                <td>2222</td>
-                                <td>Nhà A đã cho Việt thuê</td>
-                            </tr>
-                            </tbody>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">{item.id}</th>
+                                    <td><img src={item.avatar} alt="" width="100"/></td>
+                                    <td>{item.username}</td>
+                                    <td>{item.telephone}</td>
+                                    <td>{item.status}</td>
+                                    <td>2222</td>
+                                    <td>Nhà A đã cho Việt thuê</td>
+                                </tr>
+                                </tbody>
                             )
                         }
                     })}
                 </table>
 
-                        <Link to={"/admin"}>
-                            <Button variant="contained" startIcon={<KeyboardBackspaceIcon />}>Quay lại</Button>
-                        </Link>
+                <Link to={"/admin"}>
+                    <Button variant="contained" startIcon={<KeyboardBackspaceIcon />}>Quay lại</Button>
+                </Link>
 
             </div>
         </div>

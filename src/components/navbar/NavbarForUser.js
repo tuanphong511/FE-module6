@@ -16,7 +16,7 @@ import Profile from "../../pages/proFile/Profile";
 import {useState} from "react";
 import {useSelector} from "react-redux";
 
-export default function Navbar() {
+export default function NavbarForUser() {
     const [open, setOpen] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false); // State để theo dõi trạng thái đăng nhập
     const [openProfile, setOpenProfile] = React.useState()
