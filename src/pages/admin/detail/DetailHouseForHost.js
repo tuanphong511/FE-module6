@@ -15,6 +15,7 @@ import * as React from "react";
 import {number} from "yup";
 import {addOrders, getOrder} from "../../../services/orderService";
 import {toast} from "react-toastify";
+import customAxios from "../../../services/api";
 
 
 const style = {
@@ -29,6 +30,12 @@ const style = {
 };
 
 export default function DetailHouseForHost() {
+    const [act, setAct] = useState("");
+    const [isActionSelected, setActionSelected] = useState(false);
+
+
+
+
 
     // const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
     const {id} = useParams()
@@ -41,20 +48,47 @@ export default function DetailHouseForHost() {
                 setHouse(res.payload.data)
             })
     }, [])
+    const [action, setAction] = useState("");
+    const [currentStatus, setCurrentStatus] = useState("");
 
-    // const get_day_of_time = (d1, d2) => {
-    //     if (d1 && d2) {
-    //         let ms1 = d1.getTime();
-    //         let ms2 = d2.getTime();
-    //         return Math.ceil((ms2 - ms1) / (24 * 60 * 60 * 1000));
-    //     }
-    // };
-    // console.log(get_day_of_time(selectedDateRange[0]?.$d, selectedDateRange[1]?.$d))
-    // let day = get_day_of_time(selectedDateRange[0]?.$d, selectedDateRange[1]?.$d)
-    // let serviceCharge = 50
-    // let result = house.price * day
-    // let price = result + serviceCharge
 
+    // ...
+
+    const handleCheckIn = () => {
+        const updatedAction = "Check In";
+        const updatedStatus = "Đã ở";
+        setAct("Check In")
+        setActionSelected(true);
+        customAxios
+            .put(`/orders/${house.order[0].id}`, { action: updatedAction, status: updatedStatus })
+            .then(() => {
+                setAction(updatedAction);
+                setCurrentStatus(updatedStatus);
+                toast.success("Check In thành công");
+            })
+            .catch((error) => {
+                console.error("Lỗi khi cập nhật dữ liệu: ", error);
+            });
+
+    };
+
+    const handleCheckOut = () => {
+        const updatedAction = "Check Out";
+        const updatedStatus = "Đã trả phòng";
+        setAct("Check Out")
+        setActionSelected(true);
+        customAxios
+            .put(`/orders/${house.order[0].id}`, { action: updatedAction, status: updatedStatus })
+            .then(() => {
+                // Cập nhật trạng thái và hành động trên giao diện người dùng
+                setAction(updatedAction);
+                setCurrentStatus(updatedStatus);
+                toast.success("Check Out thành công");
+            })
+            .catch((error) => {
+                console.error("Lỗi khi cập nhật dữ liệu: ", error);
+            });
+    }
 
     return (
         <div>
@@ -77,9 +111,7 @@ export default function DetailHouseForHost() {
                             1 đánh giá .
                         </viv>
 
-                        {/*<div>*/}
-                        {/*    {house.order.rentalTime}*/}
-                        {/*</div>*/}
+
                     </div>
                 </div>
                 <div id="carouselExampleCaptions1" className="carousel slide" data-ride="carousel"
@@ -140,9 +172,7 @@ export default function DetailHouseForHost() {
                             <div style={{marginLeft:"10px"}}>
                                 {house.numberOfBathrooms} phòng tắm
                             </div>
-                            {/*<div>*/}
-                            {/*    1 phòng tắm đầy đủ và 1 phòng vệ sinh cơ bản riêng*/}
-                            {/*</div>*/}
+
                         </div>
                         <div style={{border: "0.5px solid gray", width: "100%", margin: "20px 0"}}></div>
                         <div style={{textAlign: "left"}}>
@@ -171,28 +201,10 @@ export default function DetailHouseForHost() {
                                     </div>
                                 </div>
                             </div>
-                            {/*<div*/}
-                            {/*    style={{display: "flex", borderRadius: "10px", textAlign: "center", marginTop: "20px"}}>*/}
-                            {/*    <LocalizationProvider dateAdapter={AdapterDayjs}>*/}
-                            {/*        <DemoContainer components={['DateRangePicker']}>*/}
-                            {/*            <DateRangePicker*/}
-                            {/*                localeText={{start: 'Check-in', end: 'Check-out'}}*/}
-                            {/*                value={selectedDateRange}*/}
-                            {/*                onChange={(newDateRange) => setSelectedDateRange(newDateRange)}*/}
-                            {/*            />*/}
-                            {/*        </DemoContainer>*/}
-                            {/*    </LocalizationProvider>*/}
-                            {/*</div>*/}
-                            <div>
-                                {/*<Button*/}
-                                {/*    variant="contained"*/}
-                                {/*    sx={{width: "100%", top: "15px"}}*/}
-                                {/*    onClick={handleAddOrder}*/}
-                                {/*>*/}
-                                {/*    Thuê Phòng*/}
-                                {/*</Button>*/}
-                            </div>
+
+
                             {house && (
+
                             <div>
                                 <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
 
@@ -200,7 +212,7 @@ export default function DetailHouseForHost() {
                                         Check in:
                                     </div>
                                     <div>
-                                        {house.order[0].checkIn}
+                                        {house.order[0]?.checkIn}
                                     </div>
                                 </div>
                                 <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
@@ -208,7 +220,7 @@ export default function DetailHouseForHost() {
                                         Check out:
                                     </div>
                                     <div>
-                                        {house.order[0].checkOut}
+                                        {house.order[0]?.checkOut}
 
                                     </div>
                                 </div>
@@ -217,7 +229,7 @@ export default function DetailHouseForHost() {
                                         Số ngày thuê
                                     </div>
                                     <div>
-                                        {house.order[0].rentalTime} ngày
+                                        {house.order[0]?.rentalTime} ngày
                                     </div>
                                 </div>
                                 <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
@@ -225,7 +237,7 @@ export default function DetailHouseForHost() {
                                         Tổng tiền:
                                     </div>
                                     <div>
-                                        {house.order[0].totalMoney} $
+                                        {house.order[0]?.totalMoney} $
                                     </div>
                                 </div>
                                 {/*<div style={{border: "0.5px solid gray", width: "100%", marginTop: "10%"}}></div>*/}
@@ -234,21 +246,37 @@ export default function DetailHouseForHost() {
                                         Trạng thái:
                                     </div>
                                     <div>
-                                        {house.order[0].status}
+                                        {house.order[0]?.status}
                                     </div>
                                 </div>
                                 <div style={{display: "flex", justifyContent: "space-between", marginTop: "15%"}}>
                                     <div>
-                                        Hành động
+                                        Hành động: {act}
                                     </div>
                                     <div>
                                         {/*{house.order[0].action}*/}
-                                        <Button variant="outlined" size="small">
-                                            Check In
-                                        </Button>
-                                        <Button variant="outlined" size="small" style={{marginLeft:"10px"}}>
-                                            Check Out
-                                        </Button>
+                                        {/*{action === "Check In" ? (*/}
+                                        {/*    <Button variant="outlined" size="small" disabled>*/}
+                                        {/*        Check In*/}
+                                        {/*    </Button>*/}
+                                        {/*) : (*/}
+                                        {/*    <Button variant="outlined" size="small" onClick={handleCheckIn}>*/}
+                                        {/*        Check In*/}
+                                        {/*    </Button>*/}
+                                        {/*)}*/}
+                                        {/*<Button variant="outlined" size="small" style={{marginLeft:"10px"}}>*/}
+                                        {/*    Check Out*/}
+                                        {/*</Button>*/}
+                                        {act !== "Check In" && (
+                                            <Button variant="outlined" size="small" onClick={handleCheckIn}>
+                                                Check In
+                                            </Button>
+                                        )}
+                                        {act !== "Check Out" && (
+                                            <Button variant="outlined" size="small" style={{ marginLeft: "10px" }} onClick={handleCheckOut}>
+                                                Check Out
+                                            </Button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

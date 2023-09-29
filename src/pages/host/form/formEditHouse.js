@@ -1,7 +1,6 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDispatch } from "react-redux";
-import { addHouses, getHouses, updateHouses } from "../../../services/houseService";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";

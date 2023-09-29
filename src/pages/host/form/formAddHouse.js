@@ -134,7 +134,6 @@ export default function FormAddHouse() {
                         house: {id: houseRes.payload[houseRes.payload.length - 1].id},
                        // Sử dụng id của nhà mới
                     };
-                    console.log(pictureData,"pic")
                     // Thêm ảnh vào bảng Picture
                     return dispatch(addPictures(pictureData))
                         .then((res) => {
@@ -147,7 +146,6 @@ export default function FormAddHouse() {
 
                setTimeout(()=> {
                    dispatch(getHouses());
-                   console.log(1)
                    toast.success("Đã thêm thành công");
                    navigate("/host");
                },500)
@@ -155,8 +153,7 @@ export default function FormAddHouse() {
                 return Promise.all(addPicturePromises);
             }).catch((e) => {
         }).then((res) => {
-            // console.log(res)
-            // Tất cả ảnh đã được thêm vào nhà mới thành công
+
         }).catch((error) => {
             console.error("Error adding house:", error);
         });
@@ -182,6 +179,7 @@ export default function FormAddHouse() {
     return (
         <div className="form-add-house">
             <Navbar/>
+            <div style={{ marginTop: "4%" }}>
             <h2>Đăng nhà cho thuê</h2>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -269,7 +267,7 @@ export default function FormAddHouse() {
                         required
                     />
                     {isLoading && (
-                        <div className="progress">
+                        <div className="progress" style={{ width: "26.5%", margin: "0 auto" }}>
                             <div
                                 className="progress-bar"
                                 role="progressbar"
@@ -282,11 +280,15 @@ export default function FormAddHouse() {
                             </div>
                         </div>
                     )}
+
+                </Grid>
+                <Grid item xs={12}>
                     {imgStatus.length > 0 &&
                         !isLoading &&
                         imgStatus.map((url, index) => (
-                            <img style={{width: "100px", height: "100px"}} key={index} src={url} alt={`Image ${index}`}/>
-                        ))}
+                            <img style={{width: "100px", height: "100px", margin: "0 10px"}} key={index} src={url} alt={`Image ${index}`}/>
+                        ))
+                    }
                 </Grid>
             </Grid>
             <Button
@@ -297,6 +299,7 @@ export default function FormAddHouse() {
             >
                 Thêm nhà
             </Button>
+            </div>
         </div>
     );
 }
