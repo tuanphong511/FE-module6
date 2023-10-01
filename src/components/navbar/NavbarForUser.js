@@ -24,6 +24,7 @@ export default function NavbarForUser() {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const user = JSON.parse(localStorage.getItem('user')) || null;
+    console.log(user)
     const token = user && user.message && user.message.token;
     const username = token ? token.username : null;
     const isLoggedIn = !!token && !!username;
@@ -39,12 +40,12 @@ export default function NavbarForUser() {
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+    const handleHistory = () =>{
+        navigate(`/rental/history/${token.idUser}`)
+    }
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const handleAddHouse = () => {
-        navigate("/houses")
-    }
     React.useEffect(() => {
         console.log(user)
         if (user && !loggedIn) {
@@ -114,15 +115,9 @@ export default function NavbarForUser() {
                                             <MenuItem onClick={handleOpenProfile}>Hồ sơ</MenuItem>
 
                                             <MenuItem onClick={handleOpenMyAccount}>Thay đổi mật khẩu</MenuItem>
-
-                                            {/*<hr style={{width: "100%", margin: "5px"}} />*/}
-
+                                            <MenuItem onClick={handleHistory}>Những nhà đã thuê</MenuItem>
 
 
-                                            {/*<MenuItem onClick={handleAddHouse}>Cho thuê nhà</MenuItem>*/}
-
-
-                                            {/*<hr style={{width: "100%", margin: "5px"}}/>*/}
 
 
                                             <MenuItem onClick={() => {

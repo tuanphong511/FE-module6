@@ -36,11 +36,14 @@ export const getHouseById = createAsyncThunk(
         return await axios.get(`http://localhost:5000/houses/${id}`)
     }
 )
+
 export const handleSearch = createAsyncThunk(
     'houses/searchHouses',
-    async (address) =>{
-        const response = await axios.get(`http://localhost:5000/houses?address=${address}`);
-        return response
+    async (data) =>{
+        const { homeName, address, bath, bad, startTime, endTime,minPrice,maxPrice } = data;
+        const response = await axios.get(`http://localhost:5000/houses?address=${address}&&homeName=${homeName}&&bath=${bath}&&bad=${bad}&&startTime=${startTime}&&endTime=${endTime}&&minPrice=${minPrice}&&maxPrice=${maxPrice}`);
+        console.log(response, 'response');
+        return response.data;
     }
 
 )

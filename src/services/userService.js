@@ -14,7 +14,6 @@ export const register = createAsyncThunk(
     'user/register',
     async (data) =>{
         const res = await customAxios.post('register', data);
-        console.log(res);
         return res
     }
 )

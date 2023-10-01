@@ -20,6 +20,7 @@ export default function ListHouse() {
     });
 
 
+
     const navigate = useNavigate();
 
     const handleDetail = (id) => {

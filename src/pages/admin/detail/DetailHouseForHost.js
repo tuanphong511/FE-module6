@@ -70,15 +70,18 @@ export default function DetailHouseForHost() {
                 console.error("Lỗi khi cập nhật dữ liệu: ", error);
             });
 
+
     };
 
     const handleCheckOut = () => {
+
         const updatedAction = "Check Out";
         const updatedStatus = "Đã trả phòng";
         setAct("Check Out")
         setActionSelected(true);
         customAxios
             .put(`/orders/${house.order[0].id}`, { action: updatedAction, status: updatedStatus })
+
             .then(() => {
                 // Cập nhật trạng thái và hành động trên giao diện người dùng
                 setAction(updatedAction);
@@ -88,6 +91,7 @@ export default function DetailHouseForHost() {
             .catch((error) => {
                 console.error("Lỗi khi cập nhật dữ liệu: ", error);
             });
+
     }
 
     return (
@@ -254,25 +258,13 @@ export default function DetailHouseForHost() {
                                         Hành động: {act}
                                     </div>
                                     <div>
-                                        {/*{house.order[0].action}*/}
-                                        {/*{action === "Check In" ? (*/}
-                                        {/*    <Button variant="outlined" size="small" disabled>*/}
-                                        {/*        Check In*/}
-                                        {/*    </Button>*/}
-                                        {/*) : (*/}
-                                        {/*    <Button variant="outlined" size="small" onClick={handleCheckIn}>*/}
-                                        {/*        Check In*/}
-                                        {/*    </Button>*/}
-                                        {/*)}*/}
-                                        {/*<Button variant="outlined" size="small" style={{marginLeft:"10px"}}>*/}
-                                        {/*    Check Out*/}
-                                        {/*</Button>*/}
-                                        {act !== "Check In" && (
+
+                                        {house.order[0]?.status === "Chờ nhận phòng" && act !== "Check In" && (
                                             <Button variant="outlined" size="small" onClick={handleCheckIn}>
                                                 Check In
                                             </Button>
                                         )}
-                                        {act !== "Check Out" && (
+                                        {house.order[0]?.status === "Đã ở" && act !== "Check Out" && (
                                             <Button variant="outlined" size="small" style={{ marginLeft: "10px" }} onClick={handleCheckOut}>
                                                 Check Out
                                             </Button>
@@ -415,20 +407,7 @@ export default function DetailHouseForHost() {
                             </div>
                         </div>
                         <div className="col-7" style={{textAlign: "left", maxWidth: "27%", marginLeft: "10%"}}>
-                            {/*<div style={{paddingBottom: "16px"}}>*/}
-                            {/*    Tỉ lệ phản hồi: 100%*/}
-                            {/*</div>*/}
-                            {/*<div style={{paddingBottom: "16px"}}>*/}
-                            {/*    Thời gian phản hồi: trong vòng một giờ*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <Button*/}
-                            {/*        variant="contained"*/}
-                            {/*        type="button"*/}
-                            {/*    >*/}
-                            {/*        Liên hệ với chủ nhà*/}
-                            {/*    </Button>*/}
-                            {/*</div>*/}
+
                         </div>
                     </div>
                 </div>

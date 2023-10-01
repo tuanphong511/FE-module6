@@ -1,6 +1,7 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDispatch } from "react-redux";
+import { addHouses, getHouses, updateHouses } from "../../../services/houseService";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
@@ -13,6 +14,7 @@ export default function FormEditHouse() {
     const [imageUpload, setImageUpload] = useState(null);
     const [percent, setPercent] = useState(0);
     const [urlFile, setUrlFile] = useState("");
+    const [idPicture, setIdPicture] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [values, setValues] = useState({
         name: "",
@@ -58,6 +60,8 @@ export default function FormEditHouse() {
             customAxios.get(`/houses/${id}`).then(res => {
                 setValues(res.data)
                 console.log("res", res.data)
+                setUrlFile(res.data.picture[0].picture);
+                setIdPicture(res.data.picture[0].id);
                 return res.data
             })
         }
@@ -66,7 +70,7 @@ export default function FormEditHouse() {
         }
     }, [])
 
-    const handleEdit = () => {
+    const handleEdit = async () => {
         let data = {
             name: values.name,
             address: values.address,
@@ -76,10 +80,11 @@ export default function FormEditHouse() {
             price: values.price,
             status: values.status,
             rentals:values.rentals,
-
-            user: { id: a.message.token.idUser },
-
+            user: { id: a.message.token.idUser }
         };
+        let dataPicture = {
+            picture: urlFile
+        }
         console.log("data: ", data);
 
         customAxios.put(`/houses/${id}`, data).then((res) => {
@@ -87,6 +92,13 @@ export default function FormEditHouse() {
             toast.success("Sửa thành công");
             navigate("/")
         })
+        const resPicture = await customAxios.put(`/pictures/${idPicture}`, dataPicture);
+        if (resPicture.data) {
+            toast.success("Sửa thành công");
+            navigate('/')
+        } else {
+            console.error(resPicture.error);
+        }
     };
 
     useEffect(() => {
@@ -99,6 +111,7 @@ export default function FormEditHouse() {
     return (
         <div className="form-add-house">
             <Navbar />
+            <div style={{marginTop: "3%"}}>
             <h2>Sửa thông tin nhà</h2>
             <Box initialValues={values} enableReinitailize={true} onSubmit={handleEdit}>
                 <Grid container spacing={2}>
@@ -185,9 +198,10 @@ export default function FormEditHouse() {
                                 setImageUpload(event.target.files[0]);
                             }}
                             required
+                            multiple
                         />
                         {isLoading && (
-                            <div className="progress">
+                            <div className="progress mt-2" style={{ width: "26.5%", margin: "0 auto"}}>
                                 <div
                                     className="progress-bar"
                                     role="progressbar"
@@ -200,7 +214,10 @@ export default function FormEditHouse() {
                                 </div>
                             </div>
                         )}
-                        {urlFile && !isLoading && <img src={urlFile} alt="" />}
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        {urlFile && !isLoading && <img src={urlFile} alt="" style={{width: "100px", height: "100px", margin: "0 10px"}} />}
                     </Grid>
                 </Grid>
                 <Button
@@ -212,6 +229,7 @@ export default function FormEditHouse() {
                     Sửa thông tin nhà
                 </Button>
             </Box>
+            </div>
         </div>
     );
 }

@@ -5,7 +5,7 @@ import {Button, InputAdornment, Modal, TextField} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getHouseById, getHouses} from "../../../services/houseService";
+import {getHouseById, getHouses, updateHouses} from "../../../services/houseService";
 import {useNavigate, useParams} from "react-router-dom";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
@@ -16,6 +16,8 @@ import {number} from "yup";
 import {addOrders, getOrder} from "../../../services/orderService";
 import {toast} from "react-toastify";
 import NavbarForUser from "../../../components/navbar/NavbarForUser";
+import customAxios from "../../../services/api";
+import axios from "axios";
 
 
 const style = {
@@ -32,6 +34,7 @@ const style = {
 export default function DetailHouse() {
     const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
     const {id} = useParams()
+    const userLogin = JSON.parse(localStorage.getItem("user"))
 
     const dispatch = useDispatch()
     const [house, setHouse] = useState("")
@@ -39,7 +42,6 @@ export default function DetailHouse() {
         dispatch(getHouseById(id))
             .then(res => {
                 setHouse(res.payload.data)
-                console.log(res)
             })
     }, [])
 
@@ -55,28 +57,20 @@ export default function DetailHouse() {
     let serviceCharge = 50
     let result = house.price * day
     let price = result + serviceCharge
-    const a = JSON.parse(localStorage.getItem("user"));
+    const [Status, setStatus] = useState("");
 
-    const [order , setOrder] =useState({
 
-        checkIn:null,
-        checkOut:null,
-        rentalTime:"",
-        totalMoney:"",
-        status: "",
-        action: "",
 
-    })
+
     const navigate = useNavigate()
     const handleAddOrder = () => {
-        // Kiểm tra xem đã chọn ngày đặt và ngày trả phòng chưa
         if (selectedDateRange[0] && selectedDateRange[1]) {
             const checkIn = selectedDateRange[0].$d; // Ngày đặt
             const checkOut = selectedDateRange[1].$d; // Ngày trả phòng
             const totalMoney = price; // Giá tổng cộng
             const rentalTime = day
+            const updatedStatus = "Đang cho thuê"
 
-            // Tạo đối tượng đặt hàng
             const newOrder = {
                 checkIn,
                 checkOut,
@@ -84,24 +78,32 @@ export default function DetailHouse() {
                 rentalTime,
                 status: "Chờ nhận phòng",
                 action: " ",
-                user: { id: a.message.token.idUser },
-                house: house.id
-                // Thêm các thông tin khác cần thiết cho đặt hàng
-            };
+                user:  userLogin.message.token.idUser ,
+                house: {id: house.id}
 
-            // Cập nhật state order
-            // setOrder(newOrder);
+
+            };
             dispatch(addOrders(newOrder)).then((res) => {
+                const  data = {
+                    status:updatedStatus,
+                    rentals: house.rentals + 1 ,
+
+                }
+
+                axios.put(`http://localhost:5000/houses/${id}`,data).then(()=>{
+
+                    setStatus(updatedStatus)
+                })
                 dispatch(getOrder());
-                navigate("/detail/house/:id");
+                navigate(`/detail/house/${id}`);
                 toast.success("Đã đặt phòng thành công");
+
             });
 
-            // Đẩy thông tin đặt hàng lên bảng order hoặc gửi lên server
-            // Ví dụ:
-            // postOrderToServer(newOrder);
+
+
+
         } else {
-            // Xử lý trường hợp người dùng chưa chọn đủ thông tin
             alert("Vui lòng chọn ngày đặt và ngày trả phòng.");
         }
     };
@@ -379,7 +381,7 @@ export default function DetailHouse() {
                             <div style={{display: "flex"}}>
 
                                 <div>
-                                    <img src={house.user.avatar} alt="error"
+                                    <img src={house?.user?.avatar} alt="error"
                                          style={{width: "50px", height: "50px", borderRadius: "50%"}}/>
                                 </div>
                                 <div style={{textAlign: "left", marginLeft: "10px"}}>

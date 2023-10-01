@@ -41,13 +41,7 @@ export default function ListHost() {
                         <th scope="col">Số nhà đang cho thuê</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Hành động</th>
-                        <th scope="col">
-                            <Link to={"/detail/host"}>
-                                <button class="btn btn-light btn-text" type="button" aria-expanded="false">
-                                    Chi tiết
-                                </button>
-                            </Link>
-                        </th>
+                        <th scope="col"></th>
 
                     </tr>
                     </thead>
@@ -89,7 +83,13 @@ export default function ListHost() {
                                         </div>
                                     </div>
                                 </td>
-
+                                <td>
+                                    <Link to={"/detail/host"}>
+                                        <button className="btn btn-light btn-text" type="button" aria-expanded="false">
+                                            Chi tiết
+                                        </button>
+                                    </Link>
+                                </td>
                             </tr>
                             </tbody>
 

@@ -43,13 +43,7 @@ export default function ListUser() {
                         <th scope="col">Số điện thoại</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Hành động</th>
-                        <th scope="col">
-                            <Link to={"/detail/user"}>
-                                <button className="btn btn-light btn-text" type="button" aria-expanded="false" >
-                                    Chi tiết
-                                </button>
-                            </Link>
-                        </th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     { listUser && listUser.map((item,key) => {
@@ -84,6 +78,13 @@ export default function ListUser() {
                                             <a class="dropdown-item" href="#">Mở khoá</a>
                                         </div>
                                     </div>
+                                </td>
+                                <td>
+                                    <Link to={"/detail/user"}>
+                                        <button className="btn btn-light btn-text" type="button" aria-expanded="false" >
+                                            Chi tiết
+                                        </button>
+                                    </Link>
                                 </td>
                             </tr>
                             </tbody>

@@ -12,7 +12,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
@@ -32,32 +32,44 @@ const style = {
     p: 4,
 };
 
-export default function FunctionBar() {
+export default function FunctionBar({ handleSubmit }) {
+    const [time, setTime] = useState(["", ""]);
+    const [homeName, setHomeName] = useState("");
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [bath, setBath] = React.useState("");
     const [bad, setBad] = React.useState("");
-    const [searchAddress, setSearchAddress] = useState("");
-    const [address, setaddress] = useState([]);
+    const [address, setAddress] = useState("");
+    // const [houses, setHouses] = useState([]);
+    const [minPrice, setminPrice] = useState("");
+    const [maxPrice, setmaxPrice] = useState("");
 
-    console.log(bath, "bath");
-    console.log(bad, "bad");
-    const handleBath = (event) => {
-        setBath(event.target.value);
-    };
-    const handleBad = (event) => {
-        setBad(event.target.value);
-    };
     const dispatch = useDispatch();
-    const hand = () => {
-        dispatch(handleSearch(searchAddress)).then((res) => {
-            setaddress(res.payload.data);
+    const onSubmit = () => {
+        const [startTime, endTime] = time;
+        // if (!startTime || !endTime) {
+        //   alert("Vui lòng chọn ngày check-in và check-out");
+        //   return;
+        // }
+        const dataSearch = {
+            address,
+            homeName,
+            bath,
+            bad,
+            startTime: startTime ? startTime.format("YYYY-MM-DD HH:mm") : "",
+            endTime: endTime ? endTime.format("YYYY-MM-DD HH:mm") : "",
+            minPrice,
+            maxPrice,
+        };
+        console.log(dataSearch, "click");
+
+        dispatch(handleSearch(dataSearch)).then((res) => {
+            handleClose();
+            handleSubmit();
         });
     };
-    // useEffect(() => {
 
-    // }, [searchAddress]);
     return (
         <div className={"col-12"}>
             <div className="btn-search-category">
@@ -95,16 +107,19 @@ export default function FunctionBar() {
                 Bộ Lọc
               </Typography>
               <Typography sx={{ marginRight: " 442px" }}></Typography>
-
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={["DateRangePicker"]}>
-        <DateRangePicker
-            localeText={{ start: "Check-in", end: "Check-out" }}
-        />
+                  <DateRangePicker
+                      value={time}
+                      onChange={(newValue) => setTime(newValue)}
+                      localeText={{ start: "Check-in", end: "Check-out" }}
+                  />
                 </DemoContainer>
               </LocalizationProvider>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 <TextField
+                    value={homeName}
+                    onChange={(event) => setHomeName(event.target.value)}
                     id="outlined-basic"
                     label="Tên nhà"
                     variant="outlined"
@@ -119,8 +134,8 @@ export default function FunctionBar() {
                     variant="outlined"
                     sx={{ marginRight: "68%", width: " 100%" }}
                     type="text"
-                    value={searchAddress}
-                    onChange={(e) => setSearchAddress(e.target.value)}
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                 />
               </Typography>
 
@@ -133,7 +148,7 @@ export default function FunctionBar() {
                     id="demo-simple-select"
                     value={bad}
                     label="Số lượng phòng ngủ"
-                    onChange={handleBad}
+                    onChange={(e) => setBad(e.target.value)}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -153,7 +168,7 @@ export default function FunctionBar() {
                     id="demo-simple-select"
                     value={bath}
                     label="Số lượng phòng tắm"
-                    onChange={handleBath}
+                    onChange={(e) => setBath(e.target.value)}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -164,10 +179,33 @@ export default function FunctionBar() {
                 </Select>
               </FormControl>
 
+              <div sx={{ mt: 4, marginLeft: "1px" }}>
+                <TextField
+                    sx={{ mt: 2, marginRight: "24px", marginLeft: "-340px" }}
+                    id="standard-multiline-flexible"
+                    label="Giá thấp"
+                    multiline
+                    maxRows={4}
+                    variant="standard"
+                    value={minPrice}
+                    onChange={(e) => setminPrice(e.target.value)}
+                />
+                <TextField
+                    sx={{ mt: 2 }}
+                    id="standard-textarea"
+                    label="Giá cao"
+                    placeholder="Placeholder"
+                    multiline
+                    variant="standard"
+                    value={maxPrice}
+                    onChange={(e) => setmaxPrice(e.target.value)}
+                />
+              </div>
+
               <Button
                   variant="contained"
                   sx={{ mt: 2, width: "100%" }}
-                  onClick={hand}
+                  onClick={() => onSubmit()}
               >
                 Hiển thị kết quả
               </Button>
