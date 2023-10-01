@@ -1,10 +1,10 @@
 import "../../style.css";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, } from "react-redux";
 import {useEffect, useState} from "react";
 import {getHouses} from "../../services/houseService";
-import Button from "@mui/material/Button";
-import {Link, useNavigate} from "react-router-dom";
-import {login} from "../../services/userService";
+// import Button from "@mui/material/Button";
+import { useNavigate} from "react-router-dom";
+// import {login} from "../../services/userService";
 export default function ListHouseForUser() {
     // const houses = useSelector((state) =>{
     //     console.log(state,"state")

@@ -1,19 +1,19 @@
 import "../../style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useEffect} from "react";
 import { getHouses } from "../../services/houseService";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../services/userService";
-import { getPicture } from "../../services/pictureService";
+// import { login } from "../../services/userService";
+// import { getPicture } from "../../services/pictureService";
 export default function ListHouse() {
-  const user = useSelector((state) => {
-    if (state.user && state.user.user && state.user.user.message) {
-      return state.user.user.message.token.idUser;
-    }
-    // Nếu bất kỳ một phần nào đó bị thiếu, trả về giá trị mặc định hoặc null
-    return [];
-  });
+//   const user = useSelector((state) => {
+//     if (state.user && state.user.user && state.user.user.message) {
+//       return state.user.user.message.token.idUser;
+//     }
+//     // Nếu bất kỳ một phần nào đó bị thiếu, trả về giá trị mặc định hoặc null
+//     return [];
+//   });
 
   const houses = useSelector((state) => {
     if (state.houses && state.houses.houses) {

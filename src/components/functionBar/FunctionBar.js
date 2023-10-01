@@ -12,14 +12,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { handleSearch } from "../../services/houseService";
-// import dayjs from "dayjs";
 
 const style = {
   position: "absolute",
@@ -47,15 +46,6 @@ export default function FunctionBar({ handleSubmit }) {
   const [maxPrice, setmaxPrice] = useState("");
 
   const dispatch = useDispatch();
-
-  const houses = useSelector((state) => {
-    if (state.houses && state.houses.houses) {
-      return state.houses.houses;
-    }
-    // Nếu bất kỳ một phần nào đó bị thiếu, trả về giá trị mặc định hoặc null
-    return null;
-  });
-
   const onSubmit = () => {
     const [startTime, endTime] = time;
     // if (!startTime || !endTime) {
