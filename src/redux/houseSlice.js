@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getHouses,  addHouses} from "../services/houseService";
+import {getHouses,  addHouses, handleSearch} from "../services/houseService";
 
 const initialState = {
     houses: []
@@ -10,7 +10,10 @@ const houseSlice =createSlice({
     reducers:{},
     extraReducers: builder => {
         builder.addCase(getHouses.fulfilled, (state, action) =>{
-            state.houses = action.payload.data
+            state.houses = action.payload
+        })
+        builder.addCase(handleSearch.fulfilled, (state, action) =>{
+            state.houses = action.payload
         })
         builder.addCase(addHouses.fulfilled, (state, action) =>{
             state.houses = action.payload.data

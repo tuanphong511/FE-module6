@@ -29,6 +29,7 @@ export default function ListHouseForUser() {
     const dispatch = useDispatch()
     const [houses,setHouses]=useState([])
     useEffect(() =>{
+        console.log(111111111);
         dispatch(getHouses())
             .then(res=>{
                 setHouses(res.payload)
